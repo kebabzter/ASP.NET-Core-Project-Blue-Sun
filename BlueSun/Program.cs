@@ -1,4 +1,5 @@
 using BlueSun.Data;
+using BlueSun.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +27,9 @@ builder.Services
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+app.PrepareDatabase();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -42,8 +46,8 @@ app.UseHttpsRedirection()
    .UseAuthentication()
    .UseAuthorization();
 
-
 app.MapDefaultControllerRoute();
 app.MapRazorPages();
+
 
 app.Run();
