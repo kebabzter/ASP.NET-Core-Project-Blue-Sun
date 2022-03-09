@@ -27,7 +27,7 @@
                     Name = n.Name,
                     Price = n.Price,
                     ImageUrl = n.ImageUrl,
-                    Category = n.Category.Name
+                    //Category = n.Category.Name
                 })
                 .ToList();
 
@@ -56,7 +56,7 @@
                 Description = nft.Description,
                 Price = nft.Price,
                 ImageUrl = nft.ImageUrl,
-                CategoryId = nft.CategoryId,
+                //CategoryId = nft.CategoryId,
             };
 
             this.data.NFTs.Add(nftData);

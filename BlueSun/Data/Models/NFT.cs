@@ -11,21 +11,18 @@
         [MaxLength(NFTNameMaxLength)]
         public string Name { get; set; }
 
+        [Range(NFTMinPrice, NFTMaxPrice)]
         public decimal Price { get; set; }
 
         [Required]
         public string Description { get; set; }
 
-        //[Required]
-        //[ForeignKey(nameof(NFTCollection))]
-        //public int NFTCollectionId { get; set; }
+        [Required]
+        [ForeignKey(nameof(NFTCollection))]
+        public int NFTCollectionId { get; set; }
 
-        //[Required]
-        //public NFTCollection NFTCollection { get; init; }
-
-        public int CategoryId { get; set; }
-
-        public Category Category { get; init; }
+        [Required]
+        public NFTCollection NFTCollection { get; init; }
 
         [Required]
         public string ImageUrl { get; set; }

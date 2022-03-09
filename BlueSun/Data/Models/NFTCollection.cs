@@ -10,12 +10,13 @@
 
         public string Name { get; set; }
 
-        public ICollection<NFT> NFTs { get; init; } = new List<NFT>();
+        public int CategoryId { get; set; }
+
+        public Category Category { get; init; }
 
         [Required]
-        [ForeignKey(nameof(Artist))]
-        public int ArtistId { get; set; }
+        public string ImageUrl { get; set; }
 
-        public Artist Artist { get; init; }
+        public ICollection<NFT> NFTs { get; init; } = new List<NFT>();
     }
 }

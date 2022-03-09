@@ -16,7 +16,7 @@
         public decimal Price { get; init; }
 
         [Required]
-        [StringLength(int.MaxValue,
+        [StringLength(NFTDescriptionMaxLength,
             MinimumLength = NFTDescriptionMinLength,
             ErrorMessage = "The field Description must be a string with a minimum length of {2}.")]
         public string Description { get; init; }

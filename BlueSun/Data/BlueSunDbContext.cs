@@ -14,30 +14,22 @@
 
         public DbSet<Category> Categories { get; init; }
 
-        //public DbSet<Artist> Artists { get; init; }
-
-        //public DbSet<NFTCollection> NFTCollections { get; init; }
+        public DbSet<NFTCollection> NFTCollections { get; init; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
-                .Entity<NFT>()
+                .Entity<NFTCollection>()
                 .HasOne(c => c.Category)
-                .WithMany(c=> c.NFTs)
-                .HasForeignKey(c=>c.CategoryId)
+                .WithMany(c => c.NFTCollections)
+                .HasForeignKey(c => c.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //builder.Entity<NFT>()
-            //    .HasOne(n => n.NFTCollection)
-            //    .WithMany(n => n.NFTs)
-            //    .HasForeignKey(n => n.NFTCollectionId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //builder.Entity<NFTCollection>()
-            //    .HasOne(n => n.Artist)
-            //    .WithMany(a => a.NFTCollections)
-            //    .HasForeignKey(n => n.ArtistId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<NFT>()
+                .HasOne(n => n.NFTCollection)
+                .WithMany(n => n.NFTs)
+                .HasForeignKey(n => n.NFTCollectionId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);
         }

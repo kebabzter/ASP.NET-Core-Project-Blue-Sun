@@ -4,6 +4,7 @@ using BlueSun.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlueSun.Data.Migrations
 {
     [DbContext(typeof(BlueSunDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220309195339_NFTCollectionsTable")]
+    partial class NFTCollectionsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,6 +48,9 @@ namespace BlueSun.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -67,6 +72,8 @@ namespace BlueSun.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("NFTCollectionId");
 
                     b.ToTable("NFTs");
@@ -80,22 +87,13 @@ namespace BlueSun.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("NFTCollections");
                 });
@@ -304,24 +302,21 @@ namespace BlueSun.Data.Migrations
 
             modelBuilder.Entity("BlueSun.Data.Models.NFT", b =>
                 {
+                    b.HasOne("BlueSun.Data.Models.Category", "Category")
+                        .WithMany("NFTs")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("BlueSun.Data.Models.NFTCollection", "NFTCollection")
                         .WithMany("NFTs")
                         .HasForeignKey("NFTCollectionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("NFTCollection");
-                });
-
-            modelBuilder.Entity("BlueSun.Data.Models.NFTCollection", b =>
-                {
-                    b.HasOne("BlueSun.Data.Models.Category", "Category")
-                        .WithMany("NFTCollections")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Category");
+
+                    b.Navigation("NFTCollection");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -377,7 +372,7 @@ namespace BlueSun.Data.Migrations
 
             modelBuilder.Entity("BlueSun.Data.Models.Category", b =>
                 {
-                    b.Navigation("NFTCollections");
+                    b.Navigation("NFTs");
                 });
 
             modelBuilder.Entity("BlueSun.Data.Models.NFTCollection", b =>

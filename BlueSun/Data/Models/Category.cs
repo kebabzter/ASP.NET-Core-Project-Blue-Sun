@@ -6,6 +6,6 @@
 
         public string Name { get; init; }
 
-        public ICollection<NFT> NFTs { get; set; } = new List<NFT>();
+        public ICollection<NFTCollection> NFTCollections { get; set; } = new List<NFTCollection>();
     }
 }
