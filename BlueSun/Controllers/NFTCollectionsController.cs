@@ -17,6 +17,23 @@
             Categories = this.GetNFTCollectionCategories()
         });
 
+        public IActionResult All()
+        {
+            var nfts = this.data
+                .NFTCollections
+                .OrderByDescending(n => n.Id)
+                .Select(n => new NFTListingViewModel
+                {
+                    Id = n.Id,
+                    Name = n.Name,
+                    ImageUrl = n.ImageUrl,
+                    Category = n.Category.Name
+                })
+                .ToList();
+
+            return View(nfts);
+        }
+
         [HttpPost]
         public IActionResult Create(CreateNFTCollectionFormModel nftCollection)
         {
