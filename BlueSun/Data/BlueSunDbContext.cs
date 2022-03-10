@@ -19,6 +19,13 @@
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
+                .Entity<NFT>()
+                .HasOne(c => c.Category)
+                .WithMany(c => c.NFTs)
+                .HasForeignKey(c => c.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
                 .Entity<NFTCollection>()
                 .HasOne(c => c.Category)
                 .WithMany(c => c.NFTCollections)

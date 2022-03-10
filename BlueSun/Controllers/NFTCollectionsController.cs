@@ -19,10 +19,10 @@
 
         public IActionResult All()
         {
-            var nfts = this.data
+            var nftsCollections = this.data
                 .NFTCollections
                 .OrderByDescending(n => n.Id)
-                .Select(n => new NFTListingViewModel
+                .Select(n => new NFTCollectionListingViewModel
                 {
                     Id = n.Id,
                     Name = n.Name,
@@ -31,7 +31,7 @@
                 })
                 .ToList();
 
-            return View(nfts);
+            return View(nftsCollections);
         }
 
         [HttpPost]
@@ -66,7 +66,38 @@
             this.data.NFTCollections.Add(nftCollectionData);
             this.data.SaveChanges();
 
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult Details(int id)
+        {
+            var collection = this.data.NFTCollections.FirstOrDefault(n => n.Id == id);
+
+            var nftsQuery = this.data.NFTs.AsQueryable();
+
+            if (collection != null)
+            {
+                nftsQuery = nftsQuery.Where(n => n.NFTCollectionId == id);
+            }
+
+            var nfts = nftsQuery
+                .Select(n => new NFTListingViewModel
+                {
+                    Id = n.Id,
+                    Name = n.Name,
+                    ImageUrl = n.ImageUrl,
+                    Price = n.Price,
+                    Category = n.Category.Name
+                })
+                .ToList();
+
+            return View(new CollectionNFTsQueryModel
+            {
+                Name = collection.Name,
+                NFTs = nfts,
+                Id = collection.Id
+            });
+
         }
 
         private IEnumerable<NFTCollectionCategoryViewModel> GetNFTCollectionCategories()

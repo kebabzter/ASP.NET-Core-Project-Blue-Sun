@@ -27,7 +27,7 @@
                     Name = n.Name,
                     Price = n.Price,
                     ImageUrl = n.ImageUrl,
-                    //Category = n.Category.Name
+                    Category = n.Category.Name
                 })
                 .ToList();
 
@@ -35,7 +35,7 @@
         }
 
         [HttpPost]
-        public IActionResult Add(AddNFTFormModel nft)
+        public IActionResult Add(AddNFTFormModel nft, int id)
         {
             if (!this.data.Categories.Any(c => c.Id == nft.CategoryId))
             {
@@ -56,7 +56,8 @@
                 Description = nft.Description,
                 Price = nft.Price,
                 ImageUrl = nft.ImageUrl,
-                //CategoryId = nft.CategoryId,
+                CategoryId = nft.CategoryId,
+                NFTCollectionId = id
             };
 
             this.data.NFTs.Add(nftData);

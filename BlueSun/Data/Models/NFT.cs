@@ -17,6 +17,10 @@
         [Required]
         public string Description { get; set; }
 
+        public int CategoryId { get; set; }
+
+        public Category Category { get; init; }
+
         [Required]
         [ForeignKey(nameof(NFTCollection))]
         public int NFTCollectionId { get; set; }
