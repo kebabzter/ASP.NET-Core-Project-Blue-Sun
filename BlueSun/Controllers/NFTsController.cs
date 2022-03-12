@@ -3,6 +3,7 @@
     using BlueSun.Data;
     using BlueSun.Data.Models;
     using BlueSun.Models.NFTs;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class NFTsController : Controller
@@ -11,6 +12,7 @@
 
         public NFTsController(BlueSunDbContext data) => this.data = data;
 
+        [Authorize]
         public IActionResult Add(int id)
         {
             var collection = this.data.NFTCollections.First(c => c.Id == id);
@@ -41,6 +43,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Add(AddNFTFormModel nft, int id)
         {
             if (!this.data.Categories.Any(c => c.Id == nft.CategoryId))

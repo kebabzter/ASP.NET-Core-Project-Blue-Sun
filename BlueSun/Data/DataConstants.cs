@@ -30,7 +30,9 @@
 
         public class Artist
         {
+            public const int NameMinLength = 2; 
             public const int NameMaxLength = 30;
+            public const int PhoneNumberMinLength = 6;
             public const int PhoneNumberMaxLength = 25;
         }
     }

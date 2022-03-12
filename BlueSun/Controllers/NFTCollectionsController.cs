@@ -2,10 +2,14 @@
 {
     using BlueSun.Data;
     using BlueSun.Data.Models;
+    using BlueSun.Infrastructure;
     using BlueSun.Models.NFTCollections;
     using BlueSun.Models.NFTs;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
+    using System.Security.Claims;
 
     public class NFTCollectionsController : Controller
     {
@@ -13,10 +17,19 @@
 
         public NFTCollectionsController(BlueSunDbContext data) => this.data = data;
 
-        public IActionResult Create() => View(new CreateNFTCollectionFormModel
+        [Authorize]
+        public IActionResult Create()
         {
-            Categories = this.GetNFTCollectionCategories()
-        });
+            if(!this.UserIsArtist())
+            {
+                return RedirectToAction(nameof(ArtistsController.Become), "Artists");
+            }
+
+            return View(new CreateNFTCollectionFormModel
+            {
+                Categories = this.GetNFTCollectionCategories()
+            });
+        }
 
         public IActionResult All([FromQuery]AllNFTCollectionsQueryModel query)
         {
@@ -69,9 +82,21 @@
             return View(query);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Create(CreateNFTCollectionFormModel nftCollection)
         {
+            var artistId = this.data
+                .Artists
+                .Where(a => a.UserId == this.User.GetId())
+                .Select(a => a.Id)
+                .FirstOrDefault();
+
+            if (artistId == 0)
+            {
+                return RedirectToAction(nameof(ArtistsController.Become), "Artists");
+            }
+
             if (!this.data.Categories.Any(c => c.Id == nftCollection.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(nftCollection.CategoryId), "Category does not exist!");
@@ -96,6 +121,7 @@
                 Description = nftCollection.Description,
                 ImageUrl = nftCollection.ImageUrl,
                 CategoryId = nftCollection.CategoryId,
+                ArtistId = artistId
             };
 
             this.data.NFTCollections.Add(nftCollectionData);
@@ -134,6 +160,11 @@
             });
 
         }
+
+        private bool UserIsArtist()
+            => this.data
+                .Artists
+                .Any(d => d.UserId == this.User.GetId());
 
         private IEnumerable<NFTCollectionCategoryViewModel> GetNFTCollectionCategories()
         => this.data
