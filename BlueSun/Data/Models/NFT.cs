@@ -2,19 +2,21 @@
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using static Data.DataConstants;
+    using static Data.DataConstants.NFT;
     public class NFT
     {
         public int Id { get; init; }
 
         [Required]
-        [MaxLength(NFTNameMaxLength)]
+        [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
-        [Range(NFTMinPrice, NFTMaxPrice)]
+        [Range(MinPrice, MaxPrice)]
+        [Column(TypeName = "decimal(5,2)")]
         public decimal Price { get; set; }
 
         [Required]
+        [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
 
         public int CategoryId { get; set; }

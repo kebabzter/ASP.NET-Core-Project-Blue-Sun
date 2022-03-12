@@ -2,17 +2,17 @@
 {
     using BlueSun.Data.Models;
     using System.ComponentModel.DataAnnotations;
-    using static Data.DataConstants;
+    using static Data.DataConstants.NFTCollection;
 
     public class CreateNFTCollectionFormModel
     {
         [Required]
-        [StringLength(NFTCollectionNameMaxLength, MinimumLength = NFTCollectionNameMinLength)]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
         public string Name { get; init; }
 
         [Required]
-        [StringLength(NFTCollectionDescriptionMaxLength,
-            MinimumLength = NFTCollectionDescriptionMinLength,
+        [StringLength(DescriptionMaxLength,
+            MinimumLength = DescriptionMinLength,
             ErrorMessage = "The field Description must be a string with a minimum length of {2}.")]
         public string Description { get; init; }
 

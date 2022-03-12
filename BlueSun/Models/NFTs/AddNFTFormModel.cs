@@ -2,22 +2,22 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    using static Data.DataConstants;
+    using static Data.DataConstants.NFT;
     public class AddNFTFormModel
     {
         [Required]
-        [StringLength(NFTNameMaxLength, MinimumLength = NFTNameMinLength)]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
         public string Name { get; init; }
 
         [Range(
-            NFTMinPrice,
-            NFTMaxPrice,
+            MinPrice,
+            MaxPrice,
             ErrorMessage = "Price must be between 0.00 and 10000.00.")]
         public decimal Price { get; init; }
 
         [Required]
-        [StringLength(NFTDescriptionMaxLength,
-            MinimumLength = NFTDescriptionMinLength,
+        [StringLength(DescriptionMaxLength,
+            MinimumLength = DescriptionMinLength,
             ErrorMessage = "The field Description must be a string with a minimum length of {2}.")]
         public string Description { get; init; }
 
