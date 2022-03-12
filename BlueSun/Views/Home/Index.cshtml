@@ -1,17 +1,10 @@
 ﻿@model IndexViewModel
 
 @{
-    ViewData["Title"] = "Welcome to BlueSun";
+    ViewData["Title"] = "Welcome to BlueSun Market";
 }
 
-@{
-    var nftCollections = Model.NFTCollections;
-    var firstCollection = nftCollections.Any() ? nftCollections[0] : null;
-    var secondCollection = nftCollections.Count > 1 ? nftCollections[1] : null;
-    var thirdCollection = nftCollections.Count > 2 ? nftCollections[2] : null;
-}
-
-@if(!nftCollections.Any())
+@if(!Model.NFTCollections.Any())
 {
     <div class="jumbotron">
         <h1 class="display-4">Welcome to the Biggest NFT Marketplace in the World!</h1>
@@ -22,7 +15,9 @@
         </p>
     </div>
 }
-
+<div class="row text-center mb-3 mt-2">
+    <h2>Latest Collections</h2>
+</div>
    
 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
@@ -31,31 +26,13 @@
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
     </div>
     <div class="carousel-inner">
-        @if (firstCollection != null)
+        @for (int i = 0; i < Model.NFTCollections.Count; i++)
         {
-            <div class="carousel-item active">
-                <img src="@firstCollection.ImageUrl" class="d-block w-100" alt="@firstCollection.Name">
+            var collection = Model.NFTCollections[i];
+            <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
+                <img src="@collection.ImageUrl" height="700" class="d-block w-100" alt="@collection.Name">
                 <div class="carousel-caption d-none d-md-block">
-                     <h5><a class="btn btn-primary" asp-controller="NFTCollections" asp-action="Details" asp-route-id="@firstCollection.Id">@firstCollection.Name</a></h5>
-                </div>
-            </div>
-        }
-
-        @if (secondCollection != null)
-        {
-            <div class="carousel-item">
-                <img src="@secondCollection.ImageUrl" class="d-block w-100" alt="@secondCollection.Name">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5><a class="btn btn-primary"asp-controller="NFTCollections" asp-action="Details" asp-route-id="@secondCollection.Id">@secondCollection.Name</a></h5>
-                </div>
-            </div>
-        }
-        @if (thirdCollection != null)
-        {
-            <div class="carousel-item">
-                <img src="@thirdCollection.ImageUrl" class="d-block w-100" alt="@thirdCollection.Name">
-                <div class="carousel-caption d-none d-md-block">
-                     <h5><a class="btn btn-primary"asp-controller="NFTCollections" asp-action="Details" asp-route-id="@thirdCollection.Id">@thirdCollection.Name</a></h5>
+                     <h5><a class="btn btn-primary" asp-controller="NFTCollections" asp-action="Details" asp-route-id="@collection.Id">@collection.Name</a></h5>
                 </div>
             </div>
         }

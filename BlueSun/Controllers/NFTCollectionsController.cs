@@ -5,6 +5,7 @@
     using BlueSun.Models.NFTCollections;
     using BlueSun.Models.NFTs;
     using Microsoft.AspNetCore.Mvc;
+    using System.Linq;
 
     public class NFTCollectionsController : Controller
     {
@@ -17,21 +18,55 @@
             Categories = this.GetNFTCollectionCategories()
         });
 
-        public IActionResult All()
+        public IActionResult All([FromQuery]AllNFTCollectionsQueryModel query)
         {
-            var nftsCollections = this.data
-                .NFTCollections
-                .OrderByDescending(n => n.Id)
-                .Select(n => new NFTCollectionListingViewModel
+            var collectionsQuery = this.data.NFTCollections.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.Category))
+            {
+                collectionsQuery = collectionsQuery.Where(c => c.Category.Name == query.Category);
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+            {
+                collectionsQuery = collectionsQuery.Where(c =>
+                c.Name.ToLower().Contains(query.SearchTerm.ToLower()) ||
+                c.Description.ToLower().Contains(query.SearchTerm.ToLower()));
+            }
+
+            var totalCollections = collectionsQuery.Count();
+
+            collectionsQuery = query.Sorting switch
+            {
+                CollectionSorting.DateCreated => collectionsQuery.OrderByDescending(c => c.Id),
+                CollectionSorting.Name => collectionsQuery.OrderBy(c => c.Name),
+                _ => collectionsQuery.OrderByDescending(c => c.Id)
+            };
+
+            var nftsCollections = collectionsQuery
+                .Skip((query.CurrentPage - 1) * AllNFTCollectionsQueryModel.CollectionsPerPage)
+                .Take(AllNFTCollectionsQueryModel.CollectionsPerPage)
+                .Select(c => new NFTCollectionListingViewModel
                 {
-                    Id = n.Id,
-                    Name = n.Name,
-                    ImageUrl = n.ImageUrl,
-                    Category = n.Category.Name
+                    Id = c.Id,
+                    Name = c.Name,
+                    ImageUrl = c.ImageUrl,
+                    Category = c.Category.Name
                 })
                 .ToList();
 
-            return View(nftsCollections);
+            var categories = this.data
+                .NFTCollections
+                .Select(c => c.Category.Name)
+                .OrderBy(c => c)
+                .Distinct()
+                .ToList();
+
+            query.Collections = nftsCollections;
+            query.Categories = categories;
+            query.TotalCollections = totalCollections;
+
+            return View(query);
         }
 
         [HttpPost]

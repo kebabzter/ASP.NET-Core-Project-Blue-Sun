@@ -29,6 +29,8 @@
         [Display(Name = "Category")]
         public int CategoryId { get; init; }
 
+        public string CollectionName { get; set; }
+
         public IEnumerable<NFTCategoryViewModel> Categories { get; set; }
     }
 }

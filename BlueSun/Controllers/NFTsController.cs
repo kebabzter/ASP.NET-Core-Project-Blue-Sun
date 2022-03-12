@@ -11,10 +11,16 @@
 
         public NFTsController(BlueSunDbContext data) => this.data = data;
 
-        public IActionResult Add() => View(new AddNFTFormModel
+        public IActionResult Add(int id)
         {
-            Categories = this.GetNFTCategories()
-        });
+            var collection = this.data.NFTCollections.First(c => c.Id == id);
+
+            return View(new AddNFTFormModel
+               {
+                   CollectionName = collection.Name,
+                   Categories = this.GetNFTCategories()
+               });
+        }
 
         public IActionResult All()
         {
@@ -59,6 +65,8 @@
                 CategoryId = nft.CategoryId,
                 NFTCollectionId = id
             };
+
+            
 
             this.data.NFTs.Add(nftData);
             this.data.SaveChanges();

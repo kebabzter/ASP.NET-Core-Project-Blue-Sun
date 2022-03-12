@@ -1,13 +1,13 @@
 ﻿@model AddNFTFormModel
 
 @{
-    ViewData["Title"] = "Add NFT";
+    ViewData["Title"] = $"Add NFT";
 }
 
 <div class="container">
     <div class="row">
         <div class="col-sm-12 offset-lg-3 col-lg-8 offset-xl-3 col-xl-6">
-            <h2 class="heading-margin text-center">Add NFT</h2>
+            <h2 class="heading-margin text-center">Add NFT  to '@Model.CollectionName'</h2>
             <form method="post">
                 <div class="mb-3">
                     <label asp-for="Name"></label>

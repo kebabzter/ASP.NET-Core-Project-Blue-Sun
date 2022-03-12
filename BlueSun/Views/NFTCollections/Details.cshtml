@@ -1,17 +1,23 @@
 ﻿@model CollectionNFTsQueryModel
 
-<li class="nav-item">
-    <a class="btn btn-primary" asp-area="" asp-controller="NFTs" asp-route-id="@Model.Id" asp-action="Add"> Add NFT To Collection</a>
-</li>
+@{
+    ViewData["Title"] = $"{Model.Name} - Collection | BlueSun";
+}
+
+
 
 <div class="row">
     <h2 class="heading-margin text-center">@Model.Name</h2>
+
+    <div class="nav-item mt-4 mb-3 text-center">
+        <a class="btn btn-primary" asp-area="" asp-controller="NFTs" asp-route-id="@Model.Id" asp-action="Add"> Add NFT To Collection</a>
+    </div>
 
     @foreach (var nft in Model.NFTs)
     {
         <div class="col-md-4 col-lg-3 col-sm-4 col-xl-3">
             <div class="card">
-                <img class="card-img-top" src="@nft.ImageUrl" alt="@nft.Name - @nft.Price - @nft.Category">
+                <img class="card-img-top" src="@nft.ImageUrl" width="800" height="300" alt="@nft.Name - @nft.Price - @nft.Category">
                 <div class="card-body text-center">
                     <h5 class="card-title text-center">@nft.Name </h5>
                     <p class="card-text">(@nft.Price) coins</p>

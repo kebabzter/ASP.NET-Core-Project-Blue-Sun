@@ -5,10 +5,9 @@
     {
        <div class="col-md-4 col-lg-3 col-sm-4 col-xl-3">
             <div class="card">
-            <img class="card-img-top" src="@nft.ImageUrl" alt="@nft.Name - @nft.Price - @nft.Category">
+            <img class="card-img-top" src="@nft.ImageUrl" width="800" height="300" alt="@nft.Name - @nft.Price - @nft.Category">
             <div class="card-body text-center">
                 <h5 class="card-title text-center">@nft.Name</h5>
-                @*<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>*@
                 <a asp-controller="NFTs" asp-action="Details" asp-route-id="@nft.Id" class="btn btn-primary">View More</a>
             </div>
         </div>

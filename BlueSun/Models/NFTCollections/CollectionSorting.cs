@@ -1,6 +1,8 @@
 ﻿namespace BlueSun.Models.NFTCollections
 {
-    public class CollectionSorting
+    public enum CollectionSorting
     {
+        DateCreated = 0,
+        Name = 1,
     }
 }
