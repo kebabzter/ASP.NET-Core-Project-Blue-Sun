@@ -5,6 +5,7 @@
     using BlueSun.Infrastructure;
     using BlueSun.Models.NFTCollections;
     using BlueSun.Models.NFTs;
+    using BlueSun.Services.NFTCollections;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -13,9 +14,14 @@
 
     public class NFTCollectionsController : Controller
     {
+        private readonly INFTCollectionService collections;
         private readonly BlueSunDbContext data;
 
-        public NFTCollectionsController(BlueSunDbContext data) => this.data = data;
+        public NFTCollectionsController(INFTCollectionService collections, BlueSunDbContext data)
+        {
+            this.data = data;
+            this.collections = collections;
+        }
 
         [Authorize]
         public IActionResult Create()
@@ -33,51 +39,18 @@
 
         public IActionResult All([FromQuery]AllNFTCollectionsQueryModel query)
         {
-            var collectionsQuery = this.data.NFTCollections.AsQueryable();
+            var queryResult = this.collections.All(
+                query.Category,
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                AllNFTCollectionsQueryModel.CollectionsPerPage);
 
-            if (!string.IsNullOrWhiteSpace(query.Category))
-            {
-                collectionsQuery = collectionsQuery.Where(c => c.Category.Name == query.Category);
-            }
+            var categories = this.collections.AllCollectionCategories();
 
-            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
-            {
-                collectionsQuery = collectionsQuery.Where(c =>
-                c.Name.ToLower().Contains(query.SearchTerm.ToLower()) ||
-                c.Description.ToLower().Contains(query.SearchTerm.ToLower()));
-            }
-
-            var totalCollections = collectionsQuery.Count();
-
-            collectionsQuery = query.Sorting switch
-            {
-                CollectionSorting.DateCreated => collectionsQuery.OrderByDescending(c => c.Id),
-                CollectionSorting.Name => collectionsQuery.OrderBy(c => c.Name),
-                _ => collectionsQuery.OrderByDescending(c => c.Id)
-            };
-
-            var nftsCollections = collectionsQuery
-                .Skip((query.CurrentPage - 1) * AllNFTCollectionsQueryModel.CollectionsPerPage)
-                .Take(AllNFTCollectionsQueryModel.CollectionsPerPage)
-                .Select(c => new NFTCollectionListingViewModel
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    ImageUrl = c.ImageUrl,
-                    Category = c.Category.Name
-                })
-                .ToList();
-
-            var categories = this.data
-                .NFTCollections
-                .Select(c => c.Category.Name)
-                .OrderBy(c => c)
-                .Distinct()
-                .ToList();
-
-            query.Collections = nftsCollections;
+            query.Collections = queryResult.Collections;
             query.Categories = categories;
-            query.TotalCollections = totalCollections;
+            query.TotalCollections = queryResult.TotalCollections;
 
             return View(query);
         }

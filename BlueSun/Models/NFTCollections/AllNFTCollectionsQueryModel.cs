@@ -1,5 +1,6 @@
 ﻿namespace BlueSun.Models.NFTCollections
 {
+    using BlueSun.Services.NFTCollections;
     using System.ComponentModel.DataAnnotations;
 
     public class AllNFTCollectionsQueryModel
@@ -19,6 +20,6 @@
 
         public IEnumerable<string> Categories { get; set; }
 
-        public IEnumerable<NFTCollectionListingViewModel> Collections { get; set; }
+        public IEnumerable<NFTCollectionServiceModel> Collections { get; set; }
     }
 }

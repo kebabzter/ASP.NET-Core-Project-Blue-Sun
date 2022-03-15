@@ -4,19 +4,24 @@
     using BlueSun.Models;
     using BlueSun.Models.Home;
     using BlueSun.Models.NFTCollections;
+    using BlueSun.Services.Statistics;
     using Microsoft.AspNetCore.Mvc;
     using System.Diagnostics;
     public class HomeController : Controller
     {
+        private readonly IStatisticsService statistics;
         private readonly BlueSunDbContext data;
 
-        public HomeController(BlueSunDbContext data) => this.data = data;
+        public HomeController(
+            IStatisticsService statistics,
+            BlueSunDbContext data)
+        {
+            this.statistics = statistics;
+            this.data = data;
+        }
 
         public IActionResult Index()
         {
-            var totalNFTCollections = this.data.NFTCollections.Count();
-            var totalNFTs = this.data.NFTs.Count();
-
             var nftCollections = this.data
                 .NFTCollections
                 .OrderByDescending(n => n.Id)
@@ -29,10 +34,13 @@
                 .Take(3)
                 .ToList();
 
+            var totalStatistics = this.statistics.Total();
+
             return View(new IndexViewModel
             {
-                TotalNFTCollections = totalNFTCollections,
-                TotalNFTs = totalNFTs,
+                TotalNFTCollections = totalStatistics.TotalNFTCollections,
+                TotalUsers = totalStatistics.TotalUsers,
+                TotalNFTs = totalStatistics.TotalNFTs,
                 NFTCollections = nftCollections
             });
         }

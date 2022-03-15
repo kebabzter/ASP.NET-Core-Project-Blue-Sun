@@ -1,5 +1,7 @@
 using BlueSun.Data;
 using BlueSun.Infrastructure;
+using BlueSun.Services.NFTCollections;
+using BlueSun.Services.Statistics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +25,11 @@ builder.Services
 
 builder.Services
     .AddControllersWithViews();
+
+builder.Services.AddTransient<IStatisticsService, StatisticsService>();
+
+builder.Services.AddTransient<INFTCollectionService, NFTCollectionService>();
+
 
 var app = builder.Build();
 

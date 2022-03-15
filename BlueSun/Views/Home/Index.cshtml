@@ -4,7 +4,7 @@
     ViewBag.Title = "Welcome to BlueSun Market!";
 }
 
-@if(!Model.NFTCollections.Any())
+@if (!Model.NFTCollections.Any())
 {
     <div class="jumbotron">
         <h1 class="display-4">Welcome to the Biggest NFT Marketplace in the World!</h1>
@@ -18,7 +18,7 @@
 <div class="row text-center mb-3 mt-2">
     <h2>Latest Collections</h2>
 </div>
-   
+
 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -32,7 +32,7 @@
             <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
                 <img src="@collection.ImageUrl" height="700" class="d-block w-100" alt="@collection.Name">
                 <div class="carousel-caption d-none d-md-block">
-                     <h5><a class="btn btn-primary" asp-controller="NFTCollections" asp-action="Details" asp-route-id="@collection.Id">@collection.Name</a></h5>
+                    <h5><a class="btn btn-primary" asp-controller="NFTCollections" asp-action="Details" asp-route-id="@collection.Id">@collection.Name</a></h5>
                 </div>
             </div>
         }
@@ -45,19 +45,33 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
     </button>
-</div> 
+</div>
 
-<div class="mt-4 p-5 bg-primary text-white rounded">
-    <div class="row">
-        <h3 class="col-md-4 text-center">
-            @Model.TotalNFTCollections Collections
-        </h3>
-        <h3 class="col-md-4 text-center">
-            @Model.TotalUsers Users
-        </h3>
-        <h3 class="col-md-4 text-center">
-            @Model.TotalNFTs NFTs
-        </h3>
+<div class="row mt-4">
+    <div class="col-12  text-center">
+        <button class="btn btn-primary" id="statistics-button">Show Statistics</button>
     </div>
 </div>
 
+<div class="mt-4 p-5 bg-primary text-white rounded d-none" id="statistics">
+    <div class="row">
+        <h2 class="col-md-4 text-center" id="total-collections"></h2>
+        <h2 class="col-md-4 text-center" id="total-users"></h2>
+        <h2 class="col-md-4 text-center" id="total-nfts"></h2>
+    </div>
+</div>
+
+@section Scripts{
+<script>
+    $('#statistics-button').on('click', ev => {
+        $.get('api/statistics', (data) => {
+            $('#total-collections').text(data.totalNFTCollections + " Collections");
+            $('#total-users').text(data.totalUsers + " Users");
+            $('#total-nfts').text(data.totalNFTs + " NFTs");
+
+            $('#statistics').removeClass('d-none');
+            $('#statistics-button').hide();
+        })
+    });
+</script>
+}
