@@ -23,6 +23,13 @@
 
         public Category Category { get; init; }
 
+        //[Required]
+        //[ForeignKey(nameof(Owner))]
+        //public string UserId { get; set; }
+
+        //[Required]
+        //public User Owner { get; set; }
+
         [Required]
         [ForeignKey(nameof(NFTCollection))]
         public int NFTCollectionId { get; set; }

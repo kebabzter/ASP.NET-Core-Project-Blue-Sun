@@ -2,9 +2,18 @@
 {
     public class DataConstants
     {
+        public class User
+        {
+            public const int FullNameMinLength = 3;
+            public const int FullNameMaxLength = 35;
+            public const int PasswordMinLength = 6;
+            public const int PasswordMaxLength = 100;
+
+        }
+
         public class NFTCollection
         {
-            public const int NameMaxLength = 20;
+            public const int NameMaxLength = 30;
             public const int NameMinLength = 2;
 
             public const int DescriptionMinLength = 10;

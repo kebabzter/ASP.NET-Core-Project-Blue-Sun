@@ -1,6 +1,5 @@
 html {
   font-size: 14px;
-  font-style:
 }
 
 @media (min-width: 768px) {
@@ -19,6 +18,6 @@ body {
 }
 
 .heading-margin{
-    margin-top = 20px;
-    margin-bottom = 40px;
+    margin-top: 20px;
+    margin-bottom: 40px;
 }

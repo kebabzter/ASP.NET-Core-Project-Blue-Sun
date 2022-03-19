@@ -1,10 +1,9 @@
 ﻿namespace BlueSun.Data
 {
     using BlueSun.Data.Models;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
-    public class BlueSunDbContext : IdentityDbContext
+    public class BlueSunDbContext : IdentityDbContext<User>
     {
         public BlueSunDbContext(DbContextOptions<BlueSunDbContext> options)
             : base(options)
@@ -23,10 +22,17 @@
         {
             builder
                 .Entity<Artist>()
-                .HasOne<IdentityUser>()
+                .HasOne<User>()
                 .WithOne()
                 .HasForeignKey<Artist>(a => a.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            //builder
+            //    .Entity<NFT>()
+            //    .HasOne(n => n.Owner)
+            //    .WithMany(u => u.NFTs)
+            //    .HasForeignKey(n => n.UserId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .Entity<NFT>()

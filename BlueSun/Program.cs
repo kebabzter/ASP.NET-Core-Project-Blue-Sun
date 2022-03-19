@@ -1,4 +1,5 @@
 using BlueSun.Data;
+using BlueSun.Data.Models;
 using BlueSun.Infrastructure;
 using BlueSun.Services.Artists;
 using BlueSun.Services.NFTCollections;
@@ -16,13 +17,14 @@ builder.Services.AddDbContext<BlueSunDbContext>(options => options.UseSqlServer(
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services
-    .AddDefaultIdentity<IdentityUser>(options =>
+    .AddDefaultIdentity<User>(options =>
     {
         options.Password.RequireDigit = false;
         options.Password.RequireLowercase = false;
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequireUppercase = false;
     })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<BlueSunDbContext>();
 
 builder.Services
@@ -61,6 +63,6 @@ app.UseHttpsRedirection()
 
 app.MapDefaultControllerRoute();
 app.MapRazorPages();
-
+app.UseAuthentication();
 
 app.Run();
