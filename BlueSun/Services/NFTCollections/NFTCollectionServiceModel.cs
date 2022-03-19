@@ -6,7 +6,7 @@
 
         public string Name { get; init; }
 
-        public string Category { get; init; }
+        public string CategoryName { get; init; }
 
         public string ImageUrl { get; init; }
     }

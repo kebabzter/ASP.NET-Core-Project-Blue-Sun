@@ -4,6 +4,7 @@
 
     public interface INFTCollectionService
     {
+
         NFTCollectionQueryServiceModel All(
             string category,
             string searchTerm,
@@ -11,6 +12,30 @@
             int currentPage,
             int collectionsPerPage);
 
-        IEnumerable<string> AllCollectionCategories();
+        int Create(
+            string name,
+            string description,
+            string imageUrl,
+            int categoryId,
+            int artistId);
+
+        bool Edit(
+            int id,
+            string name,
+            string description,
+            string imageUrl,
+            int categoryId);
+
+        NFTCollectionDetailsServiceModel Details(int collectionId);
+
+        IEnumerable<NFTCollectionServiceModel> ByUser(string userId);
+
+        bool IsByArtist(int collectionId, int artistId);
+
+        IEnumerable<NFTCollectionCategoryServiceModel> AllCategories();
+
+        bool CategoryExists(int categoryId);
+
+        bool NFTCollectionExists(string collectionName);
     }
 }

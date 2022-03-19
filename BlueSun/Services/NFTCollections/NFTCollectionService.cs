@@ -1,6 +1,7 @@
 ﻿namespace BlueSun.Services.NFTCollections
 {
     using BlueSun.Data;
+    using BlueSun.Data.Models;
     using BlueSun.Models.NFTCollections;
     using System.Collections.Generic;
 
@@ -41,17 +42,9 @@
                 _ => collectionsQuery.OrderByDescending(c => c.Id)
             };
 
-            var nftsCollections = collectionsQuery
+            var nftsCollections = GetCollections(collectionsQuery
                 .Skip((currentPage - 1) * collectionsPerPage)
-                .Take(collectionsPerPage)
-                .Select(c => new NFTCollectionServiceModel
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    ImageUrl = c.ImageUrl,
-                    Category = c.Category.Name
-                })
-                .ToList();
+                .Take(collectionsPerPage));
 
             return new NFTCollectionQueryServiceModel
             {
@@ -61,13 +54,94 @@
                 Collections = nftsCollections
             };
         }
+        public IEnumerable<NFTCollectionServiceModel> ByUser(string userId)
+        => GetCollections(this.data
+            .NFTCollections
+            .Where(c => c.Artist.UserId == userId));
 
-        public IEnumerable<string> AllCollectionCategories() 
+        public bool IsByArtist(int collectionId, int artistId)
+        => this.data
+            .NFTCollections
+            .Any(c => c.Id == collectionId && c.ArtistId == artistId);
+
+        public IEnumerable<NFTCollectionCategoryServiceModel> AllCategories() 
             => this.data
-                 .NFTCollections
-                 .Select(c => c.Category.Name)
-                 .OrderBy(c => c)
-                 .Distinct()
-                 .ToList();
+            .Categories
+            .Select(c => new NFTCollectionCategoryServiceModel
+            {
+                Id = c.Id,
+                Name = c.Name,
+            })
+            .ToList();
+
+        private static IEnumerable<NFTCollectionServiceModel> GetCollections(IQueryable<NFTCollection> collectionQuery)
+            => collectionQuery
+                .Select(c => new NFTCollectionServiceModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    ImageUrl = c.ImageUrl,
+                    CategoryName = c.Category.Name,
+                })
+            .ToList();
+
+        public NFTCollectionDetailsServiceModel Details(int collectionId)
+        => this.data
+            .NFTCollections
+            .Where(c => c.Id == collectionId)
+            .Select(c => new NFTCollectionDetailsServiceModel
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Description = c.Description,
+                ImageUrl = c.ImageUrl,
+                CategoryName = c.Category.Name,
+                ArtistId= c.ArtistId,
+                ArtistName = c.Artist.Name,
+                UserId = c.Artist.UserId
+            })
+            .FirstOrDefault();
+
+        public bool CategoryExists(int categoryId)
+            => this.data.Categories.Any(c => c.Id == categoryId);
+
+        public int Create(string name, string description, string imageUrl, int categoryId, int artistId)
+        {
+            var nftCollectionData = new NFTCollection
+            {
+                Name = name,
+                Description = description,
+                ImageUrl = imageUrl,
+                CategoryId = categoryId,
+                ArtistId = artistId
+            };
+
+            this.data.NFTCollections.Add(nftCollectionData);
+            this.data.SaveChanges();
+
+            return nftCollectionData.Id;
+        }
+
+        public bool NFTCollectionExists(string collectionName)
+            => this.data.NFTCollections.Any(c => c.Name == collectionName);
+
+        public bool Edit(int id, string name, string description, string imageUrl, int categoryId)
+        {
+            var nftCollectionData = this.data.NFTCollections.Find(id);
+
+            if (nftCollectionData == null)
+            {
+                return false;
+            }
+
+            nftCollectionData.Name = name;
+            nftCollectionData.Description = description;
+            nftCollectionData.ImageUrl = imageUrl;
+            nftCollectionData.CategoryId = categoryId;
+           
+            this.data.SaveChanges();
+
+            return true;
+        }
     }
 }

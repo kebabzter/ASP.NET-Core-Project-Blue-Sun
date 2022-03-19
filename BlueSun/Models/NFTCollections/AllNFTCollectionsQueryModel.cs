@@ -18,7 +18,7 @@
 
         public int TotalCollections { get; set; }
 
-        public IEnumerable<string> Categories { get; set; }
+        public IEnumerable<NFTCollectionCategoryServiceModel> Categories { get; set; }
 
         public IEnumerable<NFTCollectionServiceModel> Collections { get; set; }
     }

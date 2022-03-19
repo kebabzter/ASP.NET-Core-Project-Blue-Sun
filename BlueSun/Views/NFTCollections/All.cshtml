@@ -1,7 +1,7 @@
 ﻿@model AllNFTCollectionsQueryModel
 
 @{
-    ViewBag.Title = "Explore Collections | BlueSun";
+    ViewBag.Title = "Explore Collections";
 }
 
 <form method="get">
@@ -18,7 +18,7 @@
                     <option value="">All</option>
                     @foreach (var category in Model.Categories)
                     {
-                        <option value="@category">@category</option>
+                        <option value="@category.Name">@category.Name</option>
                     }
                 </select>
             </div>
@@ -72,20 +72,7 @@
 
 @if (!Model.Collections.Any())
 {
-    <h2 class="text-center">No cars foun by the given criteria!</h2>
+    <h2 class="text-center">No cars found by the given criteria!</h2>
 }
 
-<div class="row">
-    @foreach (var nft in Model.Collections)
-    {
-        <div class="col-md-4 col-lg-3 col-sm-4 col-xl-3">
-            <div class="card mb-3">
-                <img class="card-img-top" src="@nft.ImageUrl" height="180" alt="@nft.Name">
-                <div class="card-body text-center">
-                    <h5 class="card-title text-center">@nft.Name</h5>
-                    <a asp-controller="NFTCollections" asp-action="Details" asp-route-id="@nft.Id" class="btn btn-primary">Details</a>
-                </div>
-            </div>
-        </div>
-    }
-</div>
+<partial name="_NFTCollectionsPartial" model="@Model.Collections"/>

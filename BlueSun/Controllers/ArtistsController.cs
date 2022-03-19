@@ -23,7 +23,7 @@
         [Authorize]
         public IActionResult Become(BecomeArtistFormModel artist)
         {
-            var userId = this.User.GetId();
+            var userId = this.User.Id();
 
             var userIdAlreadyArtist = this.data
                 .Artists

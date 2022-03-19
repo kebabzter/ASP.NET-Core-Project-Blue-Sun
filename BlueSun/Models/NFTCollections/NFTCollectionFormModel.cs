@@ -1,10 +1,11 @@
 ﻿namespace BlueSun.Models.NFTCollections
 {
     using BlueSun.Data.Models;
+    using BlueSun.Services.NFTCollections;
     using System.ComponentModel.DataAnnotations;
     using static Data.DataConstants.NFTCollection;
 
-    public class CreateNFTCollectionFormModel
+    public class NFTCollectionFormModel
     {
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
@@ -24,6 +25,6 @@
         [Url]
         public string ImageUrl { get; init; }
 
-        public IEnumerable<NFTCollectionCategoryViewModel> Categories { get; set; }
+        public IEnumerable<NFTCollectionCategoryServiceModel> Categories { get; set; }
     }
 }

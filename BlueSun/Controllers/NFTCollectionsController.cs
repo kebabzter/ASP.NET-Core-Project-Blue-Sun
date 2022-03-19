@@ -5,6 +5,7 @@
     using BlueSun.Infrastructure;
     using BlueSun.Models.NFTCollections;
     using BlueSun.Models.NFTs;
+    using BlueSun.Services.Artists;
     using BlueSun.Services.NFTCollections;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
@@ -16,28 +17,33 @@
     {
         private readonly INFTCollectionService collections;
         private readonly BlueSunDbContext data;
+        private readonly IArtistService artists;
 
-        public NFTCollectionsController(INFTCollectionService collections, BlueSunDbContext data)
+        public NFTCollectionsController(
+            INFTCollectionService collections,
+            BlueSunDbContext data,
+            IArtistService artists)
         {
             this.data = data;
             this.collections = collections;
+            this.artists = artists;
         }
 
         [Authorize]
         public IActionResult Create()
         {
-            if(!this.UserIsArtist())
+            if (!this.artists.IsArtist(this.User.Id()))
             {
                 return RedirectToAction(nameof(ArtistsController.Become), "Artists");
             }
 
-            return View(new CreateNFTCollectionFormModel
+            return View(new NFTCollectionFormModel
             {
-                Categories = this.GetNFTCollectionCategories()
+                Categories = this.collections.AllCategories()
             });
         }
 
-        public IActionResult All([FromQuery]AllNFTCollectionsQueryModel query)
+        public IActionResult All([FromQuery] AllNFTCollectionsQueryModel query)
         {
             var queryResult = this.collections.All(
                 query.Category,
@@ -46,7 +52,7 @@
                 query.CurrentPage,
                 AllNFTCollectionsQueryModel.CollectionsPerPage);
 
-            var categories = this.collections.AllCollectionCategories();
+            var categories = this.collections.AllCategories();
 
             query.Collections = queryResult.Collections;
             query.Categories = categories;
@@ -56,26 +62,30 @@
         }
 
         [Authorize]
-        [HttpPost]
-        public IActionResult Create(CreateNFTCollectionFormModel nftCollection)
+        public IActionResult MyCollections()
         {
-            var artistId = this.data
-                .Artists
-                .Where(a => a.UserId == this.User.GetId())
-                .Select(a => a.Id)
-                .FirstOrDefault();
+            var myCollections = this.collections.ByUser(this.User.Id());
+
+            return View(myCollections);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Create(NFTCollectionFormModel nftCollection)
+        {
+            var artistId = this.artists.IdByUser(this.User.Id());
 
             if (artistId == 0)
             {
                 return RedirectToAction(nameof(ArtistsController.Become), "Artists");
             }
 
-            if (!this.data.Categories.Any(c => c.Id == nftCollection.CategoryId))
+            if (!this.collections.CategoryExists(nftCollection.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(nftCollection.CategoryId), "Category does not exist!");
             }
 
-            if (this.data.NFTCollections.Any(c => c.Name == nftCollection.Name))
+            if (this.collections.NFTCollectionExists(nftCollection.Name))
             {
                 this.ModelState.AddModelError(nameof(nftCollection.Name), $"NFT Collection with name {nftCollection.Name} already exists.");
             }
@@ -83,22 +93,18 @@
 
             if (!ModelState.IsValid)
             {
-                nftCollection.Categories = this.GetNFTCollectionCategories();
+                nftCollection.Categories = this.collections.AllCategories();
 
                 return View(nftCollection);
             }
 
-            var nftCollectionData = new NFTCollection
-            {
-                Name = nftCollection.Name,
-                Description = nftCollection.Description,
-                ImageUrl = nftCollection.ImageUrl,
-                CategoryId = nftCollection.CategoryId,
-                ArtistId = artistId
-            };
+            this.collections.Create(
+               nftCollection.Name,
+               nftCollection.Description,
+               nftCollection.ImageUrl,
+               nftCollection.CategoryId,
+               artistId);
 
-            this.data.NFTCollections.Add(nftCollectionData);
-            this.data.SaveChanges();
 
             return RedirectToAction("Index", "Home");
         }
@@ -125,28 +131,87 @@
                 })
                 .ToList();
 
+            var artist = this.data.Artists.FirstOrDefault(a => a.Id == collection.ArtistId);
+
             return View(new CollectionNFTsQueryModel
             {
                 Name = collection.Name,
                 NFTs = nfts,
-                Id = collection.Id
+                Id = collection.Id,
+                ArtistUserId = artist.UserId
             });
 
         }
 
-        private bool UserIsArtist()
-            => this.data
-                .Artists
-                .Any(d => d.UserId == this.User.GetId());
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var userId = this.User.Id();
 
-        private IEnumerable<NFTCollectionCategoryViewModel> GetNFTCollectionCategories()
-        => this.data
-            .Categories
-            .Select(c => new NFTCollectionCategoryViewModel
+            if (!this.artists.IsArtist(this.User.Id()))
             {
-                Id = c.Id,
-                Name = c.Name,
-            })
-            .ToList();
+                return RedirectToAction(nameof(ArtistsController.Become), "Artists");
+            }
+
+            var collection = this.collections.Details(id);
+
+            if (collection.UserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            return View(new NFTCollectionFormModel
+            {
+                Name = collection.Name,
+                Description = collection.Description,
+                ImageUrl = collection.ImageUrl,
+                CategoryId = collection.CategoryId,
+                Categories = this.collections.AllCategories()
+            });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Edit(int id, NFTCollectionFormModel nftCollection)
+        {
+            var artistId = this.artists.IdByUser(this.User.Id());
+
+            if (artistId == 0)
+            {
+                return RedirectToAction(nameof(ArtistsController.Become), "Artists");
+            }
+
+            if (!this.collections.CategoryExists(nftCollection.CategoryId))
+            {
+                this.ModelState.AddModelError(nameof(nftCollection.CategoryId), "Category does not exist!");
+            }
+
+            if (this.collections.NFTCollectionExists(nftCollection.Name))
+            {
+                this.ModelState.AddModelError(nameof(nftCollection.Name), $"NFT Collection with name {nftCollection.Name} already exists.");
+            }
+
+
+            if (!ModelState.IsValid)
+            {
+                nftCollection.Categories = this.collections.AllCategories();
+
+                return View(nftCollection);
+            }
+
+            var collectionEdited = this.collections.Edit(
+               id,
+               nftCollection.Name,
+               nftCollection.Description,
+               nftCollection.ImageUrl,
+               nftCollection.CategoryId);
+
+            if (!this.collections.IsByArtist(id,artistId))
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction("MyCollections", "NFTCollections");
+        }
     }
 }

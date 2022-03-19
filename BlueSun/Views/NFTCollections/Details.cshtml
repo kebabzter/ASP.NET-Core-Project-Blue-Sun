@@ -1,17 +1,28 @@
-﻿@model CollectionNFTsQueryModel
+﻿@using Microsoft.AspNetCore.Identity
+@model CollectionNFTsQueryModel
+
+@inject UserManager<IdentityUser> UserManager
+@inject IArtistService Artists
 
 @{
-    ViewBag.Title = $"{Model.Name} - Collection | BlueSun";
+    ViewBag.Title = $"{Model.Name} - Collection";
 }
 
-
+@{
+    var userId = User.Id();
+    var userIsArtist = Artists.IsArtist(userId);
+    var userIsCreator = @Model.ArtistUserId == userId;
+}
 
 <div class="row">
     <h2 class="heading-margin text-center">@Model.Name</h2>
 
-    <div class="nav-item mt-4 mb-3 text-center">
+    @if (userIsArtist && userIsCreator)
+    {
+        <div class="nav-item mt-4 mb-3 text-center">
         <a class="btn btn-primary" asp-area="" asp-controller="NFTs" asp-route-id="@Model.Id" asp-action="Add"> Add NFT To Collection</a>
     </div>
+    }
 
     @foreach (var nft in Model.NFTs)
     {

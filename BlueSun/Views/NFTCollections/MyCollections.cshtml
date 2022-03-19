@@ -1,0 +1,13 @@
+﻿@model IEnumerable<NFTCollectionServiceModel>
+
+@{
+    ViewBag.Title = "My Collections";
+    ViewBag.AllowCollectionEdit = true;
+}
+
+@if (!Model.Any())
+{
+    <h2 class="text-center">You do not have any collections yet!</h2>
+}
+
+<partial name="_NFTCollectionsPartial" model="@Model"/>
