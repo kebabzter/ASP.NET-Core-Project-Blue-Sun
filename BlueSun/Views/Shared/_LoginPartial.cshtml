@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using BlueSun.Data.Models
 
+
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 @inject IArtistService Artists
@@ -11,15 +12,15 @@
 
         var userId = User.Id();
         var userIsArtist = Artists.IsArtist(userId);
+        var userIsAdmin = User.IsAdmin();
 
-
-        @if (userIsArtist)
+        @if (userIsArtist && !userIsAdmin)
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="Identity" asp-controller="NFTCollections" asp-action="MyCollections">My Collections</a>
+                <a class="nav-link text-dark" asp-controller="NFTCollections" asp-action="MyCollections">My Collections</a>
             </li>
         }
-        else
+        else if(!userIsAdmin)
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="Identity" asp-controller="Artists" asp-action="Become">Become Artist</a>

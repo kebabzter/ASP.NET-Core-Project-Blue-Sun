@@ -1,17 +1,14 @@
 ﻿namespace BlueSun.Controllers
 {
     using BlueSun.Data;
-    using BlueSun.Data.Models;
     using BlueSun.Infrastructure;
     using BlueSun.Models.NFTCollections;
     using BlueSun.Models.NFTs;
     using BlueSun.Services.Artists;
     using BlueSun.Services.NFTCollections;
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
-    using System.Security.Claims;
 
     public class NFTCollectionsController : Controller
     {
@@ -62,6 +59,7 @@
         }
 
         [Authorize]
+        [Route("NFTCollections/MyCollections")]
         public IActionResult MyCollections()
         {
             var myCollections = this.collections.ByUser(this.User.Id());
@@ -148,14 +146,14 @@
         {
             var userId = this.User.Id();
 
-            if (!this.artists.IsArtist(this.User.Id()))
+            if (!this.artists.IsArtist(userId) && !User.IsAdmin())
             {
                 return RedirectToAction(nameof(ArtistsController.Become), "Artists");
             }
 
             var collection = this.collections.Details(id);
 
-            if (collection.UserId != userId)
+            if (collection.UserId != userId && !User.IsAdmin())
             {
                 return Unauthorized();
             }
@@ -176,7 +174,7 @@
         {
             var artistId = this.artists.IdByUser(this.User.Id());
 
-            if (artistId == 0)
+            if (artistId == 0 && !User.IsAdmin())
             {
                 return RedirectToAction(nameof(ArtistsController.Become), "Artists");
             }
@@ -186,10 +184,11 @@
                 this.ModelState.AddModelError(nameof(nftCollection.CategoryId), "Category does not exist!");
             }
 
-            if (this.collections.NFTCollectionExists(nftCollection.Name))
-            {
-                this.ModelState.AddModelError(nameof(nftCollection.Name), $"NFT Collection with name {nftCollection.Name} already exists.");
-            }
+            //TODO: Think of a way to display the message whenever a collection with current name exists but the name is not the current name!
+            //if (this.collections.NFTCollectionExists(nftCollection.Name))
+            //{
+            //    this.ModelState.AddModelError(nameof(nftCollection.Name), $"NFT Collection with name {nftCollection.Name} already exists.");
+            //}
 
 
             if (!ModelState.IsValid)
@@ -199,17 +198,17 @@
                 return View(nftCollection);
             }
 
-            var collectionEdited = this.collections.Edit(
+            if (!this.collections.IsByArtist(id,artistId) && !User.IsAdmin())
+            {
+                return BadRequest();
+            }
+
+            this.collections.Edit(
                id,
                nftCollection.Name,
                nftCollection.Description,
                nftCollection.ImageUrl,
                nftCollection.CategoryId);
-
-            if (!this.collections.IsByArtist(id,artistId))
-            {
-                return BadRequest();
-            }
 
             return RedirectToAction("MyCollections", "NFTCollections");
         }

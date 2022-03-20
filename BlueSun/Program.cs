@@ -28,7 +28,7 @@ builder.Services
     .AddEntityFrameworkStores<BlueSunDbContext>();
 
 builder.Services
-    .AddControllersWithViews(options => 
+    .AddControllersWithViews(options =>
     {
         options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
     });
@@ -40,8 +40,6 @@ builder.Services.AddTransient<IArtistService, ArtistService>();
 
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
 
 app.PrepareDatabase();
 
@@ -61,8 +59,8 @@ app.UseHttpsRedirection()
    .UseAuthentication()
    .UseAuthorization();
 
+app.MapDefaultAreaRoute();
 app.MapDefaultControllerRoute();
 app.MapRazorPages();
-app.UseAuthentication();
 
 app.Run();
