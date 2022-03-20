@@ -1,4 +1,4 @@
-﻿namespace BlueSun.Services.NFTCollections
+﻿namespace BlueSun.Services.NFTCollections.Models
 {
     public class NFTCollectionCategoryServiceModel
     {

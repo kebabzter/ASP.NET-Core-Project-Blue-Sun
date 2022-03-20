@@ -1,6 +1,7 @@
 ﻿namespace BlueSun.Services.NFTCollections
 {
     using BlueSun.Models.NFTCollections;
+    using BlueSun.Services.NFTCollections.Models;
 
     public interface INFTCollectionService
     {

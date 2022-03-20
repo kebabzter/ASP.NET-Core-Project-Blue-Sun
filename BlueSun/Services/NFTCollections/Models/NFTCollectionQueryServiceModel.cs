@@ -1,6 +1,5 @@
-﻿namespace BlueSun.Services.NFTCollections
+﻿namespace BlueSun.Services.NFTCollections.Models
 {
-    using BlueSun.Models.Api.NFTCollections;
 
     public class NFTCollectionQueryServiceModel
     {

@@ -2,8 +2,8 @@
 {
     using BlueSun.Data;
     using BlueSun.Models.Api.NFTCollections;
-    using BlueSun.Models.NFTCollections;
     using BlueSun.Services.NFTCollections;
+    using BlueSun.Services.NFTCollections.Models;
     using Microsoft.AspNetCore.Mvc;
     
     [ApiController]

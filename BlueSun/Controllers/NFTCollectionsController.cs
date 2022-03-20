@@ -1,5 +1,6 @@
 ﻿namespace BlueSun.Controllers
 {
+    using AutoMapper;
     using BlueSun.Data;
     using BlueSun.Infrastructure;
     using BlueSun.Models.NFTCollections;
@@ -15,15 +16,18 @@
         private readonly INFTCollectionService collections;
         private readonly BlueSunDbContext data;
         private readonly IArtistService artists;
+        private readonly IMapper mapper;
 
         public NFTCollectionsController(
             INFTCollectionService collections,
             BlueSunDbContext data,
-            IArtistService artists)
+            IArtistService artists, 
+            IMapper mapper)
         {
             this.data = data;
             this.collections = collections;
             this.artists = artists;
+            this.mapper = mapper;
         }
 
         [Authorize]
@@ -59,7 +63,6 @@
         }
 
         [Authorize]
-        [Route("NFTCollections/MyCollections")]
         public IActionResult MyCollections()
         {
             var myCollections = this.collections.ByUser(this.User.Id());
@@ -151,21 +154,18 @@
                 return RedirectToAction(nameof(ArtistsController.Become), "Artists");
             }
 
-            var collection = this.collections.Details(id);
+            var nftCollection = this.collections.Details(id);
 
-            if (collection.UserId != userId && !User.IsAdmin())
+            if (nftCollection.UserId != userId && !User.IsAdmin())
             {
                 return Unauthorized();
             }
 
-            return View(new NFTCollectionFormModel
-            {
-                Name = collection.Name,
-                Description = collection.Description,
-                ImageUrl = collection.ImageUrl,
-                CategoryId = collection.CategoryId,
-                Categories = this.collections.AllCategories()
-            });
+            var nftCollectionForm = this.mapper.Map<NFTCollectionFormModel>(nftCollection);
+
+            nftCollectionForm.Categories = this.collections.AllCategories();
+
+            return View(nftCollectionForm);
         }
 
         [Authorize]
@@ -210,7 +210,7 @@
                nftCollection.ImageUrl,
                nftCollection.CategoryId);
 
-            return RedirectToAction("MyCollections", "NFTCollections");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

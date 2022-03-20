@@ -1,16 +1,23 @@
 ﻿namespace BlueSun.Services.NFTCollections
 {
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using BlueSun.Data;
     using BlueSun.Data.Models;
     using BlueSun.Models.NFTCollections;
+    using BlueSun.Services.NFTCollections.Models;
     using System.Collections.Generic;
 
     public class NFTCollectionService : INFTCollectionService
     {
         private readonly BlueSunDbContext data;
+        private readonly IMapper mapper;
 
-        public NFTCollectionService(BlueSunDbContext data) 
-            => this.data = data;
+        public NFTCollectionService(BlueSunDbContext data, IMapper mapper)
+        {
+            this.data = data;
+            this.mapper = mapper;
+        }
 
         public NFTCollectionQueryServiceModel All(
             string category,
@@ -89,17 +96,7 @@
         => this.data
             .NFTCollections
             .Where(c => c.Id == collectionId)
-            .Select(c => new NFTCollectionDetailsServiceModel
-            {
-                Id = c.Id,
-                Name = c.Name,
-                Description = c.Description,
-                ImageUrl = c.ImageUrl,
-                CategoryName = c.Category.Name,
-                ArtistId= c.ArtistId,
-                ArtistName = c.Artist.Name,
-                UserId = c.Artist.UserId
-            })
+            .ProjectTo<NFTCollectionDetailsServiceModel>(this.mapper.ConfigurationProvider)
             .FirstOrDefault();
 
         public bool CategoryExists(int categoryId)

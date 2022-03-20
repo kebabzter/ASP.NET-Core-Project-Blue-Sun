@@ -1,5 +1,7 @@
 ﻿namespace BlueSun.Controllers
 {
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using BlueSun.Data;
     using BlueSun.Models;
     using BlueSun.Models.Home;
@@ -10,14 +12,17 @@
     public class HomeController : Controller
     {
         private readonly IStatisticsService statistics;
+        private readonly IMapper mapper;
         private readonly BlueSunDbContext data;
 
         public HomeController(
             IStatisticsService statistics,
-            BlueSunDbContext data)
+            BlueSunDbContext data,
+            IMapper mapper)
         {
             this.statistics = statistics;
             this.data = data;
+            this.mapper = mapper;
         }
 
         public IActionResult Index()
@@ -25,12 +30,7 @@
             var nftCollections = this.data
                 .NFTCollections
                 .OrderByDescending(n => n.Id)
-                .Select(n => new NFTCollectionIndexViewModel
-                {
-                    Id = n.Id,
-                    Name = n.Name,
-                    ImageUrl = n.ImageUrl,
-                })
+                .ProjectTo<NFTCollectionIndexViewModel>(this.mapper.ConfigurationProvider)
                 .Take(3)
                 .ToList();
 

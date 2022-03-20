@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<BlueSunDbContext>(options => options.UseSqlServer(connectionString));
 
@@ -26,6 +25,8 @@ builder.Services
     })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<BlueSunDbContext>();
+
+builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services
     .AddControllersWithViews(options =>

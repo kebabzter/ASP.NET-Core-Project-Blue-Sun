@@ -1,7 +1,6 @@
 ﻿namespace BlueSun.Models.NFTCollections
 {
-    using BlueSun.Data.Models;
-    using BlueSun.Services.NFTCollections;
+    using BlueSun.Services.NFTCollections.Models;
     using System.ComponentModel.DataAnnotations;
     using static Data.DataConstants.NFTCollection;
 
