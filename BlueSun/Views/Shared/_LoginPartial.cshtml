@@ -17,13 +17,13 @@
         @if (userIsArtist && !userIsAdmin)
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-controller="NFTCollections" asp-action="MyCollections">My Collections</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="NFTCollections" asp-action="MyCollections">My Collections</a>
             </li>
         }
         else if(!userIsAdmin)
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="Identity" asp-controller="Artists" asp-action="Become">Become Artist</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Artists" asp-action="Become">Become Artist</a>
             </li>
         }
 
