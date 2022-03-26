@@ -33,6 +33,7 @@
         [Authorize]
         public IActionResult Create()
         {
+            
             if (!this.artists.IsArtist(this.User.Id()))
             {
                 return RedirectToAction(nameof(ArtistsController.Become), "Artists");

@@ -12,7 +12,7 @@
     public class HomeController : Controller
     {
         private readonly IStatisticsService statistics;
-        private readonly IMapper mapper;
+        private readonly IConfigurationProvider mapper;
         private readonly BlueSunDbContext data;
 
         public HomeController(
@@ -22,7 +22,7 @@
         {
             this.statistics = statistics;
             this.data = data;
-            this.mapper = mapper;
+            this.mapper = mapper.ConfigurationProvider;
         }
 
         public IActionResult Index()
@@ -30,7 +30,7 @@
             var nftCollections = this.data
                 .NFTCollections
                 .OrderByDescending(n => n.Id)
-                .ProjectTo<NFTCollectionIndexViewModel>(this.mapper.ConfigurationProvider)
+                .ProjectTo<NFTCollectionIndexViewModel>(this.mapper)
                 .Take(3)
                 .ToList();
 

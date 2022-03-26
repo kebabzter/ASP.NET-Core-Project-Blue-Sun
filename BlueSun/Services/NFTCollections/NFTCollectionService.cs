@@ -11,12 +11,12 @@
     public class NFTCollectionService : INFTCollectionService
     {
         private readonly BlueSunDbContext data;
-        private readonly IMapper mapper;
+        private readonly IConfigurationProvider mapper;
 
         public NFTCollectionService(BlueSunDbContext data, IMapper mapper)
         {
             this.data = data;
-            this.mapper = mapper;
+            this.mapper = mapper.ConfigurationProvider;
         }
 
         public NFTCollectionQueryServiceModel All(
@@ -96,7 +96,7 @@
         => this.data
             .NFTCollections
             .Where(c => c.Id == collectionId)
-            .ProjectTo<NFTCollectionDetailsServiceModel>(this.mapper.ConfigurationProvider)
+            .ProjectTo<NFTCollectionDetailsServiceModel>(this.mapper)
             .FirstOrDefault();
 
         public bool CategoryExists(int categoryId)
