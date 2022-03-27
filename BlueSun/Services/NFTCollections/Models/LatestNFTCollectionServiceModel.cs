@@ -1,6 +1,6 @@
-﻿namespace BlueSun.Models.Home
+﻿namespace BlueSun.Services.NFTCollections.Models
 {
-    public class NFTCollectionIndexViewModel
+    public class LatestNFTCollectionServiceModel
     {
         public int Id { get; init; }
 

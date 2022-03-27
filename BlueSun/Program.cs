@@ -26,7 +26,8 @@ builder.Services
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<BlueSunDbContext>();
 
-builder.Services.AddAutoMapper(typeof(Program));
+//Was typeof(Program) 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services
     .AddControllersWithViews(options =>
@@ -42,8 +43,10 @@ builder.Services.AddTransient<IArtistService, ArtistService>();
 
 var app = builder.Build();
 
+//Preparing DB from infrastructure folder
 app.PrepareDatabase();
 
+//Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();

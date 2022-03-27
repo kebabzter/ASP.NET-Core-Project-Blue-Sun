@@ -10,7 +10,7 @@
     {
         public MappingProfile()
         {
-            this.CreateMap<NFTCollection, NFTCollectionIndexViewModel>();
+            this.CreateMap<NFTCollection, LatestNFTCollectionServiceModel>();
             this.CreateMap<NFTCollectionDetailsServiceModel, NFTCollectionFormModel>();
 
             this.CreateMap<NFTCollection, NFTCollectionDetailsServiceModel>()

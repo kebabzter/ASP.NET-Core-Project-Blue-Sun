@@ -13,6 +13,8 @@
             int currentPage,
             int collectionsPerPage);
 
+        IEnumerable<LatestNFTCollectionServiceModel> Latest();
+
         int Create(
             string name,
             string description,

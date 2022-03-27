@@ -1,37 +1,30 @@
 ﻿namespace BlueSun.Controllers
 {
     using AutoMapper;
-    using AutoMapper.QueryableExtensions;
     using BlueSun.Data;
     using BlueSun.Models;
     using BlueSun.Models.Home;
-    using BlueSun.Models.NFTCollections;
+    using BlueSun.Services.NFTCollections;
     using BlueSun.Services.Statistics;
     using Microsoft.AspNetCore.Mvc;
     using System.Diagnostics;
     public class HomeController : Controller
     {
+        private readonly INFTCollectionService nftCollections;
         private readonly IStatisticsService statistics;
-        private readonly IConfigurationProvider mapper;
-        private readonly BlueSunDbContext data;
 
         public HomeController(
             IStatisticsService statistics,
-            BlueSunDbContext data,
-            IMapper mapper)
+            INFTCollectionService nftCollections)
         {
             this.statistics = statistics;
-            this.data = data;
-            this.mapper = mapper.ConfigurationProvider;
+            this.nftCollections = nftCollections;
         }
 
         public IActionResult Index()
         {
-            var nftCollections = this.data
-                .NFTCollections
-                .OrderByDescending(n => n.Id)
-                .ProjectTo<NFTCollectionIndexViewModel>(this.mapper)
-                .Take(3)
+            var latestNftCollections = this.nftCollections
+                .Latest()
                 .ToList();
 
             var totalStatistics = this.statistics.Total();
@@ -41,7 +34,7 @@
                 TotalNFTCollections = totalStatistics.TotalNFTCollections,
                 TotalUsers = totalStatistics.TotalUsers,
                 TotalNFTs = totalStatistics.TotalNFTs,
-                NFTCollections = nftCollections
+                NFTCollections = latestNftCollections
             });
         }
 

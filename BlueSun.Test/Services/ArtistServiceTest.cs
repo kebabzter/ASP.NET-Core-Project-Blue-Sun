@@ -12,26 +12,26 @@
         [Fact]
         public void IsArtistShouldReturnTrueWhenUserIsArtist()
         {
-            //Arrange
+            // Arrange
             var artistService = GetArtistService();
 
-            //Act
+            // Act
             var result = artistService.IsArtist(UserId);
 
-            //Assert
+            // Assert
             Assert.True(result);
         }
 
         [Fact]
         public void IsArtistShouldReturnFalseWhenUserIsNotArtist()
         {
-            //Arrange
+            // Arrange
             var artistService = GetArtistService();
 
-            //Act
+            // Act
             var result = artistService.IsArtist("AnotherUserId");
 
-            //Assert
+            // Assert
             Assert.False(result);
         }
 
@@ -39,7 +39,7 @@
         {
             var data = DatabaseMock.Instance;
 
-            data.Artists.Add(new Artist { UserId = UserId });
+            data.Artists.Add(new Artist { UserId = UserId, Name = "Peter Parker", PhoneNumber = "+359-888-888" });
             data.SaveChanges();
 
             return new ArtistService(data);

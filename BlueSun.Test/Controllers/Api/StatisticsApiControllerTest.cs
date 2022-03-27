@@ -14,13 +14,13 @@
         [Fact]
         public void GetStatisticsShouldReturnTotalStatistics()
         {
-            //Arrange
+            // Arrange
             var statisticsController = new StatisticsApiController(StatisticsServiceMock.Instance);
 
-            //Act
+            // Act
             var result = statisticsController.GetStatistics();
 
-            //Assert
+            // Assert
             Assert.NotNull(result);
             Assert.Equal(5, result.TotalNFTCollections);
             Assert.Equal(10, result.TotalUsers);

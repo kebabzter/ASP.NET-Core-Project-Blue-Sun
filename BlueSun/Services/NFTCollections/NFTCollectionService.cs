@@ -71,7 +71,7 @@
             .NFTCollections
             .Any(c => c.Id == collectionId && c.ArtistId == artistId);
 
-        public IEnumerable<NFTCollectionCategoryServiceModel> AllCategories() 
+        public IEnumerable<NFTCollectionCategoryServiceModel> AllCategories()
             => this.data
             .Categories
             .Select(c => new NFTCollectionCategoryServiceModel
@@ -91,6 +91,14 @@
                     CategoryName = c.Category.Name,
                 })
             .ToList();
+
+        public IEnumerable<LatestNFTCollectionServiceModel> Latest()
+            => this.data
+                .NFTCollections
+                .OrderByDescending(n => n.Id)
+                .ProjectTo<LatestNFTCollectionServiceModel>(this.mapper)
+                .Take(3)
+                .ToList();
 
         public NFTCollectionDetailsServiceModel Details(int collectionId)
         => this.data
@@ -135,10 +143,12 @@
             nftCollectionData.Description = description;
             nftCollectionData.ImageUrl = imageUrl;
             nftCollectionData.CategoryId = categoryId;
-           
+
             this.data.SaveChanges();
 
             return true;
         }
+
+        
     }
 }
