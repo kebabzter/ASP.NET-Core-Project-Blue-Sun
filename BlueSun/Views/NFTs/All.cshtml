@@ -7,15 +7,27 @@
 <div class="row">
     @foreach (var nft in Model)
     {
-       <div class="col-md-4 col-lg-3 col-sm-4 col-xl-3">
+        <div class="col-md-4 col-lg-3 col-sm-4 col-xl-3">
             <div class="card">
-            <img class="card-img-top" src="@nft.ImageUrl" width="800" height="300" alt="@nft.Name - @nft.Price - @nft.Category">
-            <div class="card-body text-center">
-                <h5 class="card-title text-center">@nft.Name</h5>
-                <a asp-controller="NFTs" asp-action="Details" asp-route-id="@nft.Id" class="btn btn-primary">View More</a>
+                <img class="card-img-top" src="@nft.ImageUrl" width="800" height="300" alt="@nft.Name - @nft.Price - @nft.Category">
+                <div class="card-body align-left">
+                    <h6 class="card-title fw-bold text-secondary">@nft.NFTCollectionName</h6>
+                    <h6 class="fw-bold">@nft.Name</h6>
+                    <div>
+                        <h7 class="text-secondary">Price</h7>
+                        <p class="card-text fw-bold">
+                            <span class="align-middle">
+                                @nft.Price
+                            </span>
+                            <span class="align-middle">
+                                <img src="https://freepikpsd.com/file/2019/11/game-coin-transparent-png-images-.png" width="25" heigth="25" />
+                            </span>
+                            <a asp-controller="NFTs" asp-action="Details" asp-route-id="@nft.Id" class="btn stretched-link hidden"></a>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
-       </div>
     }
 </div>
 

@@ -1,5 +1,7 @@
 ﻿namespace BlueSun.Models.NFTs
 {
+    using BlueSun.Data.Models;
+
     public class NFTListingViewModel
     {
         public int Id { get; init; }
@@ -11,5 +13,7 @@
         public string ImageUrl { get; init; }
 
         public string Category { get; init; }
+
+        public string NFTCollectionName { get; init; }
     }
 }

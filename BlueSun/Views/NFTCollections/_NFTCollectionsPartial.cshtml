@@ -6,14 +6,14 @@
         <div class="col-md-4 col-lg-3 col-sm-4 col-xl-3">
             <div class="card mb-3">
                 <img class="card-img-top" src="@nftCollection.ImageUrl" height="180" alt="@nftCollection.Name">
-                <div class="card-body text-center">
+                <div class="card-body text-center ">
                     <h5 class="card-title text-center">@nftCollection.Name</h5>
                     <div class="btn-group" role="group">
                         <a asp-controller="NFTCollections" asp-action="Details" asp-route-id="@nftCollection.Id" class="btn btn-primary">Details</a>
                     @if(@ViewBag.AllowCollectionEdit == true || User.IsAdmin())
                     {
-                        <a asp-controller="NFTCollections" asp-action="Edit" asp-route-id="@nftCollection.Id" class="btn btn-warning">Edit</a>
-                        <a asp-controller="NFTCollections" asp-action="Delete" asp-route-id="@nftCollection.Id" class="btn btn-danger">Delete</a>
+                        <a asp-controller="NFTCollections" asp-action="Edit" asp-route-id="@nftCollection.Id" class="btn btn-warning text-white ">Edit</a>
+                        <a asp-controller="NFTCollections" asp-action="Delete" asp-route-id="@nftCollection.Id" class="btn btn-danger ">Delete</a>
                     }
                     </div>
                 </div>

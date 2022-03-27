@@ -140,7 +140,8 @@
                 Name = collection.Name,
                 NFTs = nfts,
                 Id = collection.Id,
-                ArtistUserId = artist.UserId
+                ArtistUserId = artist.UserId,
+                ImageUrl = collection.ImageUrl,
             });
 
         }

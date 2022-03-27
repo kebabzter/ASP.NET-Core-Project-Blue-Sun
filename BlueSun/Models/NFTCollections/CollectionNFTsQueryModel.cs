@@ -11,5 +11,7 @@
         public IEnumerable<NFTListingViewModel> NFTs { get; init; }
 
         public string ArtistUserId { get; init; }
+
+        public string ImageUrl { get; init; }
     }
 }

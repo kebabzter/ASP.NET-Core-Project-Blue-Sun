@@ -1,5 +1,6 @@
 ﻿namespace BlueSun.Models.NFTs
 {
+    using BlueSun.Data.Models;
     using System.ComponentModel.DataAnnotations;
 
     using static Data.DataConstants.NFT;
@@ -30,6 +31,8 @@
         public int CategoryId { get; init; }
 
         public string CollectionName { get; set; }
+
+        public NFTCollection NftCollection { get; init; }
 
         public IEnumerable<NFTCategoryViewModel> Categories { get; set; }
     }
