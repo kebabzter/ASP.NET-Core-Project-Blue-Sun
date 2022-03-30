@@ -2,7 +2,6 @@
 {
     using AutoMapper;
     using BlueSun.Data.Models;
-    using BlueSun.Models.Home;
     using BlueSun.Models.NFTCollections;
     using BlueSun.Services.NFTCollections.Models;
 

@@ -1,10 +1,10 @@
-﻿@model IndexViewModel
+﻿@model List<LatestNFTCollectionServiceModel> 
 
 @{
     ViewBag.Title = "Welcome to BlueSun Market!";
 }
 
-@if (!Model.NFTCollections.Any())
+@if (!Model.Any())
 {
     <div class="jumbotron">
         <h1 class="display-4">Welcome to the Biggest NFT Marketplace in the World!</h1>
@@ -27,9 +27,9 @@
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
     </div>
     <div class="carousel-inner">
-        @for (int i = 0; i < Model.NFTCollections.Count(); i++)
+        @for (int i = 0; i < Model.Count(); i++)
         {
-            var collection = Model.NFTCollections[i];
+            var collection = Model[i];
             <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
                 <img src="@collection.ImageUrl" height="700" class="d-block w-100" alt="@collection.Name">
                 <div class="carousel-caption d-none d-md-block">

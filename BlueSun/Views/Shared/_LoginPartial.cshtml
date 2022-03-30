@@ -16,20 +16,20 @@
 
         <li class="nav-item dropstart" style="width: 70px;">
             <a class="nav-link dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://cdn-icons.flaticon.com/png/512/3033/premium/3033143.png?token=exp=1648382755~hmac=a04aa71c75908d8e03618cb83eb9bea3" alt="" width="30" height="30">
+                <img src="https://cdn-icons-png.flaticon.com/512/709/709722.png" alt="" width="30" height="30">
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage Account</a></li>
+                <li><a class="dropdown-item fw-bold" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage Account</a></li>
                 @if (userIsArtist && !userIsAdmin)
                 {
                     <li>
-                        <a class="dropdown-item" asp-area="" asp-controller="NFTCollections" asp-action="MyCollections">My Collections</a>
+                        <a class="dropdown-item fw-bold" asp-area="" asp-controller="NFTCollections" asp-action="MyCollections">My Collections</a>
                     </li>
                 }
                 @if (!userIsAdmin && !userIsArtist)
                 {
                     <li>
-                        <a class="dropdown-item asp-area=" asp-area="" asp-controller="Artists" asp-action="Become">Become Artist</a>
+                        <a class="dropdown-item fw-bold" asp-area="" asp-controller="Artists" asp-action="Become">Become Artist</a>
                     </li>
                 }
             </ul>
@@ -46,10 +46,10 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="nav-link text-dark fw-bold" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link text-dark fw-bold" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
     }
 </ul>

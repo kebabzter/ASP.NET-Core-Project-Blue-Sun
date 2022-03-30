@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlueSun", "BlueSun\BlueSun.csproj", "{C589CE70-A0D3-41B6-B837-D5DB0479FB77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlueSun.Test", "BlueSun.Test\BlueSun.Test.csproj", "{FD839DCF-E011-42B6-84A3-6FE1C593FA22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlueSun.Test", "BlueSun.Test\BlueSun.Test.csproj", "{FD839DCF-E011-42B6-84A3-6FE1C593FA22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

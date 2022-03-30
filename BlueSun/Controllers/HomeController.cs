@@ -1,41 +1,47 @@
 ﻿namespace BlueSun.Controllers
 {
-    using AutoMapper;
-    using BlueSun.Data;
     using BlueSun.Models;
-    using BlueSun.Models.Home;
     using BlueSun.Services.NFTCollections;
+    using BlueSun.Services.NFTCollections.Models;
     using BlueSun.Services.Statistics;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Memory;
     using System.Diagnostics;
     public class HomeController : Controller
     {
         private readonly INFTCollectionService nftCollections;
-        private readonly IStatisticsService statistics;
+        private readonly IMemoryCache cache;
 
         public HomeController(
             IStatisticsService statistics,
-            INFTCollectionService nftCollections)
+            INFTCollectionService nftCollections,
+            IMemoryCache cache)
         {
-            this.statistics = statistics;
             this.nftCollections = nftCollections;
+            this.cache = cache;
         }
 
         public IActionResult Index()
         {
-            var latestNftCollections = this.nftCollections
-                .Latest()
-                .ToList();
+            const string latestNFTCollectionsCacheKey = "LatestNFTCollectionsCacheKey";
 
-            var totalStatistics = this.statistics.Total();
+            var latestNftCollections = this.cache.Get<List<LatestNFTCollectionServiceModel>>(latestNFTCollectionsCacheKey);
 
-            return View(new IndexViewModel
+            if (latestNftCollections == null)
             {
-                TotalNFTCollections = totalStatistics.TotalNFTCollections,
-                TotalUsers = totalStatistics.TotalUsers,
-                TotalNFTs = totalStatistics.TotalNFTs,
-                NFTCollections = latestNftCollections
-            });
+                latestNftCollections = this.nftCollections
+                    .Latest()
+                    .ToList();
+
+                var cacheOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
+
+                this.cache.Set(latestNFTCollectionsCacheKey, latestNftCollections, cacheOptions);
+            }
+
+
+
+            return View(latestNftCollections);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

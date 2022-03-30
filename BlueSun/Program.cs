@@ -29,6 +29,8 @@ builder.Services
 //Was typeof(Program) 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddMemoryCache();
+
 builder.Services
     .AddControllersWithViews(options =>
     {
