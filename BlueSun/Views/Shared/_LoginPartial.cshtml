@@ -23,7 +23,7 @@
                 @if (userIsArtist && !userIsAdmin)
                 {
                     <li>
-                        <a class="dropdown-item fw-bold" asp-area="" asp-controller="NFTCollections" asp-action="MyCollections">My Collections</a>
+                        <a class="dropdown-item fw-bold " asp-area="" asp-controller="NFTCollections" asp-action="MyCollections">My Collections</a>
                     </li>
                 }
                 @if (!userIsAdmin && !userIsArtist)
@@ -32,6 +32,13 @@
                         <a class="dropdown-item fw-bold" asp-area="" asp-controller="Artists" asp-action="Become">Become Artist</a>
                     </li>
                 }
+                @if (userIsAdmin)
+                {
+                    <li class="nav-item">
+                        <a class="dropdown-item fw-bold" asp-area="Admin" asp-controller="NFTCollections" asp-action="All">Administration</a>
+                    </li>
+                }
+
             </ul>
         </li>
 

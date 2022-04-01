@@ -13,7 +13,6 @@
         private readonly IMemoryCache cache;
 
         public HomeController(
-            IStatisticsService statistics,
             INFTCollectionService nftCollections,
             IMemoryCache cache)
         {

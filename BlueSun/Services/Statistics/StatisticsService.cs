@@ -10,7 +10,7 @@
 
         public StatisticsServiceModel Total()
         {
-            var totalNFTCollections = this.data.NFTCollections.Count();
+            var totalNFTCollections = this.data.NFTCollections.Count(c => c.IsPublic);
             var totalNFTs = this.data.NFTs.Count();
             var totalUsers = this.data.Users.Count();
 

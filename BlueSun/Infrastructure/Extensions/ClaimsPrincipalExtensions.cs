@@ -1,4 +1,4 @@
-﻿namespace BlueSun.Infrastructure
+﻿namespace BlueSun.Infrastructure.Extensions
 {
     using System.Security.Claims;
 

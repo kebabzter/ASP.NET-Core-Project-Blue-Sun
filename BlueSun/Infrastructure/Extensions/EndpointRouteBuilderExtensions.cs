@@ -1,4 +1,4 @@
-﻿namespace BlueSun.Infrastructure
+﻿namespace BlueSun.Infrastructure.Extensions
 {
     public static class EndpointRouteBuilderExtensions
     {

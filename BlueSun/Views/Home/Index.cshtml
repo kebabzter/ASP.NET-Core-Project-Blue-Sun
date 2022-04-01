@@ -29,11 +29,11 @@
     <div class="carousel-inner">
         @for (int i = 0; i < Model.Count(); i++)
         {
-            var collection = Model[i];
+            var nftCollection = Model[i];
             <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
-                <img src="@collection.ImageUrl" height="700" class="d-block w-100" alt="@collection.Name">
+                <img src="@nftCollection.ImageUrl" height="700" class="d-block w-100" alt="@nftCollection.Name">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5><a class="btn btn-primary" asp-controller="NFTCollections" asp-action="Details" asp-route-id="@collection.Id">@collection.Name</a></h5>
+                    <h5><a class="btn btn-primary" asp-controller="NFTCollections" asp-action="Details" asp-route-id="@nftCollection.Id" asp-route-information="@nftCollection.GetInformation()">@nftCollection.Name</a></h5>
                 </div>
             </div>
         }

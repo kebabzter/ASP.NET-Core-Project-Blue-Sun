@@ -1,6 +1,6 @@
 using BlueSun.Data;
 using BlueSun.Data.Models;
-using BlueSun.Infrastructure;
+using BlueSun.Infrastructure.Extensions;
 using BlueSun.Services.Artists;
 using BlueSun.Services.NFTCollections;
 using BlueSun.Services.Statistics;
@@ -30,6 +30,7 @@ builder.Services
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddMemoryCache();
+builder.Services.AddSession();
 
 builder.Services
     .AddControllersWithViews(options =>
@@ -63,9 +64,16 @@ app.UseHttpsRedirection()
    .UseStaticFiles()
    .UseRouting()
    .UseAuthentication()
-   .UseAuthorization();
+   .UseAuthorization()
+   .UseSession();
 
 app.MapDefaultAreaRoute();
+
+app.MapControllerRoute(
+    name: "NFTCollection Details",
+    pattern: "/NFTCollections/Details/{id}/{information}",
+    defaults: new { controller = "NFTCollections", action = "Details" });
+
 app.MapDefaultControllerRoute();
 app.MapRazorPages();
 

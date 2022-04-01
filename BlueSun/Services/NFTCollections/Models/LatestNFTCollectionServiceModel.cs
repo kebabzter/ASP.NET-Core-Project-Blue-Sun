@@ -1,6 +1,6 @@
 ﻿namespace BlueSun.Services.NFTCollections.Models
 {
-    public class LatestNFTCollectionServiceModel
+    public class LatestNFTCollectionServiceModel : INFTCollectionModel
     {
         public int Id { get; init; }
 

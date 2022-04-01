@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 using static BlueSun.Areas.Admin.AdminConstants;
 
-namespace BlueSun.Infrastructure
+namespace BlueSun.Infrastructure.Extensions
 {
     public static class ApplicationBuilderExtensions
     {

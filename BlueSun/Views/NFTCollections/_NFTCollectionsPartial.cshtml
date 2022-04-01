@@ -9,7 +9,7 @@
                 <div class="card-body text-center ">
                     <h5 class="card-title text-center">@nftCollection.Name</h5>
                     <div class="btn-group" role="group">
-                        <a asp-controller="NFTCollections" asp-action="Details" asp-route-id="@nftCollection.Id" class="btn btn-primary">Details</a>
+                        <a asp-controller="NFTCollections" asp-action="Details" asp-route-id="@nftCollection.Id" asp-route-information="@nftCollection.GetInformation()" class="btn btn-primary">Details</a>
                     @if(@ViewBag.AllowCollectionEdit == true || User.IsAdmin())
                     {
                         <a asp-controller="NFTCollections" asp-action="Edit" asp-route-id="@nftCollection.Id" class="btn btn-warning text-white ">Edit</a>

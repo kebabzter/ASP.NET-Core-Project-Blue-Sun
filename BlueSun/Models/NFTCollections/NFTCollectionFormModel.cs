@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using static Data.DataConstants.NFTCollection;
 
-    public class NFTCollectionFormModel
+    public class NFTCollectionFormModel : INFTCollectionModel
     {
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]

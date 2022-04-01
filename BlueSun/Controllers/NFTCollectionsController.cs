@@ -2,7 +2,7 @@
 {
     using AutoMapper;
     using BlueSun.Data;
-    using BlueSun.Infrastructure;
+    using BlueSun.Infrastructure.Extensions;
     using BlueSun.Models.NFTCollections;
     using BlueSun.Models.NFTs;
     using BlueSun.Services.Artists;
@@ -10,6 +10,8 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
+
+    using static WebConstants;
 
     public class NFTCollectionsController : Controller
     {
@@ -100,27 +102,28 @@
                 return View(nftCollection);
             }
 
-            this.collections.Create(
+            var collectionId = this.collections.Create(
                nftCollection.Name,
                nftCollection.Description,
                nftCollection.ImageUrl,
                nftCollection.CategoryId,
                artistId);
 
+            TempData[GlobalMessageKey] = "You successfully added a NFT collection and it is waiting for approval!";
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(Details), new { id = collectionId, information = nftCollection.GetInformation()});
         }
 
-        public IActionResult Details(int id)
-        {
-            var collection = this.data.NFTCollections.FirstOrDefault(n => n.Id == id);
+        public IActionResult Details(int id, string information)
+         {
+            var collection = this.collections.Details(id);
 
-            var nftsQuery = this.data.NFTs.AsQueryable();
-
-            if (collection != null)
+            if (information != collection.GetInformation())
             {
-                nftsQuery = nftsQuery.Where(n => n.NFTCollectionId == id);
+                return BadRequest();
             }
+
+            var nftsQuery = this.data.NFTs.Where(n => n.NFTCollectionId == id).AsQueryable();
 
             var nfts = nftsQuery
                 .Select(n => new NFTListingViewModel
@@ -210,9 +213,12 @@
                nftCollection.Name,
                nftCollection.Description,
                nftCollection.ImageUrl,
-               nftCollection.CategoryId);
+               nftCollection.CategoryId,
+               this.User.IsAdmin());
 
-            return RedirectToAction("Index", "Home");
+            TempData[GlobalMessageKey] = $"You successfully edited your NFT collection{(this.User.IsAdmin() ? string.Empty : " and it is waiting for approval")}!";
+
+            return RedirectToAction(nameof(Details), new { id , information = nftCollection.GetInformation() });
         }
     }
 }

@@ -2,11 +2,12 @@
 {
     using BlueSun.Data;
     using BlueSun.Data.Models;
-    using BlueSun.Infrastructure;
+    using BlueSun.Infrastructure.Extensions;
     using BlueSun.Models.Artists;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    using static WebConstants;
     public class ArtistsController : Controller
     {
         private readonly BlueSunDbContext data;
@@ -48,6 +49,8 @@
 
             this.data.Artists.Add(artistData);
             this.data.SaveChanges();
+
+            this.TempData[GlobalMessageKey] = "Thank you for becoming an artist!";
 
             return RedirectToAction("All", "NFTCollections");
         }

@@ -9,11 +9,18 @@
     {
         public MappingProfile()
         {
+            this.CreateMap<Category, NFTCollectionCategoryServiceModel>();
+
             this.CreateMap<NFTCollection, LatestNFTCollectionServiceModel>();
             this.CreateMap<NFTCollectionDetailsServiceModel, NFTCollectionFormModel>();
 
+            this.CreateMap<NFTCollection, NFTCollectionServiceModel>()
+                .ForMember(c => c.CategoryName, cfg => cfg.MapFrom(c => c.Category.Name));
+
+
             this.CreateMap<NFTCollection, NFTCollectionDetailsServiceModel>()
-                .ForMember(c => c.UserId, cfg => cfg.MapFrom(c => c.Artist.UserId));
+                .ForMember(c => c.UserId, cfg => cfg.MapFrom(c => c.Artist.UserId))
+                .ForMember(c => c.CategoryName, cfg => cfg.MapFrom(c => c.Category.Name));
         }
     }
 }

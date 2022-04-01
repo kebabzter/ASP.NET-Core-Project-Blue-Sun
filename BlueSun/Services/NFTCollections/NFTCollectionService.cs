@@ -20,13 +20,15 @@
         }
 
         public NFTCollectionQueryServiceModel All(
-            string category,
-            string searchTerm,
-            CollectionSorting sorting,
-            int currentPage,
-            int collectionsPerPage)
+            string category = null,
+            string searchTerm = null,
+            CollectionSorting sorting = CollectionSorting.DateCreated,
+            int currentPage = 1,
+            int collectionsPerPage = int.MaxValue,
+            bool publicOnly = true)
         {
-            var collectionsQuery = this.data.NFTCollections.AsQueryable();
+            var collectionsQuery = this.data.NFTCollections
+                .Where(c => !publicOnly || c.IsPublic);
 
             if (!string.IsNullOrWhiteSpace(category))
             {
@@ -71,30 +73,21 @@
             .NFTCollections
             .Any(c => c.Id == collectionId && c.ArtistId == artistId);
 
-        public IEnumerable<NFTCollectionCategoryServiceModel> AllCategories()
-            => this.data
-            .Categories
-            .Select(c => new NFTCollectionCategoryServiceModel
-            {
-                Id = c.Id,
-                Name = c.Name,
-            })
-            .ToList();
+        public void ChangeVisibility(int id)
+        {
+            var collection = this.data.NFTCollections.Find(id);
 
-        private static IEnumerable<NFTCollectionServiceModel> GetCollections(IQueryable<NFTCollection> collectionQuery)
-            => collectionQuery
-                .Select(c => new NFTCollectionServiceModel
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    ImageUrl = c.ImageUrl,
-                    CategoryName = c.Category.Name,
-                })
-            .ToList();
+            collection.IsPublic = !collection.IsPublic;
+
+            this.data.SaveChanges();
+        }
+
+
 
         public IEnumerable<LatestNFTCollectionServiceModel> Latest()
             => this.data
                 .NFTCollections
+                .Where(c => c.IsPublic)
                 .OrderByDescending(n => n.Id)
                 .ProjectTo<LatestNFTCollectionServiceModel>(this.mapper)
                 .Take(3)
@@ -106,6 +99,11 @@
             .Where(c => c.Id == collectionId)
             .ProjectTo<NFTCollectionDetailsServiceModel>(this.mapper)
             .FirstOrDefault();
+        public IEnumerable<NFTCollectionCategoryServiceModel> AllCategories()
+            => this.data
+            .Categories
+            .ProjectTo<NFTCollectionCategoryServiceModel>(this.mapper)
+            .ToList();
 
         public bool CategoryExists(int categoryId)
             => this.data.Categories.Any(c => c.Id == categoryId);
@@ -118,7 +116,8 @@
                 Description = description,
                 ImageUrl = imageUrl,
                 CategoryId = categoryId,
-                ArtistId = artistId
+                ArtistId = artistId,
+                IsPublic = false
             };
 
             this.data.NFTCollections.Add(nftCollectionData);
@@ -130,7 +129,13 @@
         public bool NFTCollectionExists(string collectionName)
             => this.data.NFTCollections.Any(c => c.Name == collectionName);
 
-        public bool Edit(int id, string name, string description, string imageUrl, int categoryId)
+        public bool Edit(
+            int id,
+            string name,
+            string description, 
+            string imageUrl,
+            int categoryId,
+            bool isPublic)
         {
             var nftCollectionData = this.data.NFTCollections.Find(id);
 
@@ -143,12 +148,15 @@
             nftCollectionData.Description = description;
             nftCollectionData.ImageUrl = imageUrl;
             nftCollectionData.CategoryId = categoryId;
+            nftCollectionData.IsPublic = false;
 
             this.data.SaveChanges();
 
             return true;
         }
-
-        
+        private IEnumerable<NFTCollectionServiceModel> GetCollections(IQueryable<NFTCollection> collectionQuery)
+            => collectionQuery
+            .ProjectTo<NFTCollectionServiceModel>(this.mapper)
+            .ToList();
     }
 }

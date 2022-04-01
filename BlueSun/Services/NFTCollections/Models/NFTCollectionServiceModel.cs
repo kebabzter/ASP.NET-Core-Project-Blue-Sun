@@ -1,6 +1,6 @@
 ﻿namespace BlueSun.Services.NFTCollections.Models
 {
-    public class NFTCollectionServiceModel
+    public class NFTCollectionServiceModel : INFTCollectionModel
     {
         public int Id { get; init; }
 
@@ -9,5 +9,7 @@
         public string CategoryName { get; init; }
 
         public string ImageUrl { get; init; }
+
+        public bool IsPublic { get; init; }
     }
 }

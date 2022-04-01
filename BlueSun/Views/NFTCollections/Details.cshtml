@@ -20,32 +20,40 @@
 
     @if (userIsArtist && userIsCreator)
     {
-        <div class="nav-item mt-4 mb-3 text-center">
+        <div class="mt-4 mb-3 text-center">
             <a class="btn btn-primary" asp-area="" asp-controller="NFTs" asp-route-id="@Model.Id" asp-action="Add"> Add NFT To Collection</a>
         </div>
     }
 
-    @foreach (var nft in Model.NFTs)
+    @if (Model.NFTs.Count() > 0)
     {
-        <div class="col-md-4 col-lg-3 col-sm-4 col-xl-3">
-            <div class="card mt-4">
-                <img class="card-img-top" src="@nft.ImageUrl" width="800" height="300" alt="@nft.Name - @nft.Price - @nft.Category">
-                <div class="card-body">
-                    <h5 class="card-title text-center">@nft.Name </h5>
-                    <div class="text-start">
-                        <h7 class="text-secondary">Price</h7>
-                        <p class="card-text fw-bold">
-                            <span class="align-middle">
-                                @nft.Price
-                            </span>
-                            <span class="align-middle">
-                                <img src="https://freepikpsd.com/file/2019/11/game-coin-transparent-png-images-.png" width="25" heigth="25" />
-                            </span>
-                            <a asp-controller="NFTs" asp-action="Details" asp-route-id="@nft.Id" class="btn stretched-link hidden"></a>
-                        </p>
+        @foreach (var nft in Model.NFTs)
+        {
+            <div class="col-md-4 col-lg-3 col-sm-4 col-xl-3">
+                <div class="card mt-4">
+                    <img class="card-img-top" src="@nft.ImageUrl" width="800" height="300" alt="@nft.Name - @nft.Price - @nft.Category">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@nft.Name </h5>
+                        <div class="text-start">
+                            <h7 class="text-secondary">Price</h7>
+                            <p class="card-text fw-bold">
+                                <span class="align-middle">
+                                    @nft.Price
+                                </span>
+                                <span class="align-middle">
+                                    <img src="https://freepikpsd.com/file/2019/11/game-coin-transparent-png-images-.png" width="25" heigth="25" />
+                                </span>
+                                <a asp-controller="NFTs" asp-action="Details" asp-route-id="@nft.Id" class="btn stretched-link hidden"></a>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
     }
+    else
+    {
+        <h2 class="mt-4 mb-3 text-center">This collection is currently empty!</h2>
+    }
+
 </div>
