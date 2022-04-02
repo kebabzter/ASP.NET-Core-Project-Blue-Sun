@@ -226,6 +226,7 @@
             return RedirectToAction(nameof(Details), new { id , information = nftCollection.GetInformation() });
         }
 
+        [Authorize]
         public IActionResult Delete(int id)
         {
             var artistId = this.artists.IdByUser(this.User.Id());

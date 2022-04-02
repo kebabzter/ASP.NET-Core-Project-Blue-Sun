@@ -1,13 +1,30 @@
 ﻿@model IEnumerable<NFTCollectionServiceModel>
 
+@using BlueSun.Data.Models
+@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<User> UserManager
+@inject IArtistService Artists
+
 @{
     ViewBag.Title = "My Collections";
     ViewBag.AllowCollectionEdit = true;
 }
 
+@{
+    var userId = User.Id();
+    var userIsArtist = Artists.IsArtist(userId);
+}
+
 @if (!Model.Any())
 {
     <h1 class="text-center mb-5 mt-5">You do not have any collections yet!</h1>
+    <h2 class="text-center">Create your first one here
+        @if (userIsArtist)
+    {
+            <a class="btn btn-primary" asp-area="" asp-controller="NFTCollections" asp-action="Create">Create a Collection</a>
+    }
+    </h2>
 }
 else
 {

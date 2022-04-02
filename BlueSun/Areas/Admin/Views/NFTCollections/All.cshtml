@@ -25,7 +25,7 @@
                 <td scope="col">@nftCollection.CategoryName</td>
                 <td scope="col">@(nftCollection.IsPublic ? "Yes" : "No")</td>
                 <td scope="col">
-                     <a asp-area="" asp-controller="NFTCollections" asp-action="Delete" asp-route-id="@nftCollection.Id" class="btn btn-danger float-end ms-3">Delete</a>
+                     <a asp-area="Admin" asp-controller="NFTCollections" asp-action="Delete" asp-route-id="@nftCollection.Id" class="btn btn-danger float-end ms-3">Delete</a>
                      <a asp-area="" asp-controller="NFTCollections" asp-action="Edit" asp-route-id="@nftCollection.Id" class="btn btn-warning text-white float-end ms-3">Edit</a>
                      <a asp-area="Admin" asp-controller="NFTCollections" asp-action="ChangeVisibility" asp-route-id="@nftCollection.Id" class="btn btn-info float-end ms-3 text-white">@(nftCollection.IsPublic ? "Hide" : "Approve")</a>
                      <a asp-area="" asp-controller="NFTCollections" asp-action="Details" asp-route-id="@nftCollection.Id" asp-route-information="@nftCollection.GetInformation()" class="btn btn-primary float-end ms-3">Details</a>
