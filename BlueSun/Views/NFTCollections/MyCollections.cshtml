@@ -7,9 +7,12 @@
 
 @if (!Model.Any())
 {
-    <h2 class="text-center">You do not have any collections yet!</h2>
+    <h1 class="text-center mb-5 mt-5">You do not have any collections yet!</h1>
+}
+else
+{
+    <h1 class="text-center mb-5 mt-5">My Collections</h1>
 }
 
-    <h1 class="text-center mb-5 mt-5">My Collections</h1>
 
 <partial name="_NFTCollectionsPartial" model="@Model"/>

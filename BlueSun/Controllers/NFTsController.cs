@@ -2,15 +2,18 @@
 {
     using BlueSun.Data;
     using BlueSun.Data.Models;
+    using BlueSun.Infrastructure.Extensions;
     using BlueSun.Models.NFTs;
+    using BlueSun.Services.NFTCollections;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class NFTsController : Controller
     {
         private readonly BlueSunDbContext data;
+        private readonly INFTCollectionService collections;
 
-        public NFTsController(BlueSunDbContext data) => this.data = data;
+        public NFTsController(BlueSunDbContext data, INFTCollectionService collections) => this.data = data;
 
         [Authorize]
         public IActionResult Add(int id)
@@ -47,11 +50,6 @@
         [Authorize]
         public IActionResult Add(AddNFTFormModel nft, int id)
         {
-            if (!this.data.Categories.Any(c => c.Id == nft.CategoryId))
-            {
-                this.ModelState.AddModelError(nameof(nft.CategoryId), "Category does not exist!");
-            }
-
 
             if (!ModelState.IsValid)
             {
@@ -60,17 +58,21 @@
                 return View(nft);
             }
 
+            var userId = this.User.Id();
+
+            var collection = this.data.NFTCollections.First(c => c.Id == id);
+
             var nftData = new NFT
             {
                 Name = nft.Name,
                 Description = nft.Description,
                 Price = nft.Price,
                 ImageUrl = nft.ImageUrl,
-                CategoryId = nft.NftCollection.CategoryId,
-                NFTCollectionId = id
+                CategoryId = collection.CategoryId,
+                NFTCollectionId = id,
+                OwnerId = userId
             };
 
-            
 
             this.data.NFTs.Add(nftData);
             this.data.SaveChanges();

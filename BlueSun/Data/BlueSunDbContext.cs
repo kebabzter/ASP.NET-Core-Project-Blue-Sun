@@ -27,12 +27,12 @@
                 .HasForeignKey<Artist>(a => a.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //builder
-            //    .Entity<NFT>()
-            //    .HasOne(n => n.Owner)
-            //    .WithMany(u => u.NFTs)
-            //    .HasForeignKey(n => n.UserId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            builder
+                .Entity<NFT>()
+                .HasOne(n => n.Owner)
+                .WithMany(u => u.NFTs)
+                .HasForeignKey(n => n.OwnerId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .Entity<NFT>()

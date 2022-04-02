@@ -27,12 +27,12 @@
         [Url]
         public string ImageUrl { get; init; }
 
-        [Display(Name = "Category")]
-        public int CategoryId { get; init; }
+        //[Display(Name = "Category")]
+        //public int CategoryId { get; init; }
 
         public string CollectionName { get; set; }
 
-        public NFTCollection NftCollection { get; init; }
+        public NFTCollection NFTCollection { get; init; }
 
         public IEnumerable<NFTCategoryViewModel> Categories { get; set; }
     }

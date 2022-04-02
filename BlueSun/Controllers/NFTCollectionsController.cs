@@ -208,7 +208,7 @@
                 return BadRequest();
             }
 
-            this.collections.Edit(
+            var edited = this.collections.Edit(
                id,
                nftCollection.Name,
                nftCollection.Description,
@@ -216,9 +216,37 @@
                nftCollection.CategoryId,
                this.User.IsAdmin());
 
+            if (!edited)
+            {
+                return BadRequest();
+            }
+
             TempData[GlobalMessageKey] = $"You successfully edited your NFT collection{(this.User.IsAdmin() ? string.Empty : " and it is waiting for approval")}!";
 
             return RedirectToAction(nameof(Details), new { id , information = nftCollection.GetInformation() });
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var artistId = this.artists.IdByUser(this.User.Id());
+
+            var collection = this.data.NFTCollections.First(c => c.Id == id); 
+
+            if (artistId != collection.ArtistId && !User.IsAdmin())
+            {
+                return Unauthorized();
+            }
+
+            var nftsToRemove = this.data.NFTs.Where(n => n.NFTCollectionId == collection.Id);
+
+            foreach (var nft in nftsToRemove)
+            {
+                this.data.NFTs.Remove(nft);
+            }
+            this.data.NFTCollections.Remove(collection);
+            this.data.SaveChanges();
+
+            return RedirectToAction(nameof(MyCollections));
         }
     }
 }

@@ -5,7 +5,7 @@
 
     public class AllNFTCollectionsQueryModel
     {
-        public const int CollectionsPerPage = 4;
+        public const int CollectionsPerPage = 8;
 
         public string Category { get; init; }
 

@@ -23,12 +23,12 @@
 
         public Category Category { get; init; }
 
-        //[Required]
-        //[ForeignKey(nameof(Owner))]
-        //public string UserId { get; set; }
+        [Required]
+        [ForeignKey(nameof(Owner))]
+        public string OwnerId { get; set; }
 
-        //[Required]
-        //public User Owner { get; set; }
+        [Required]
+        public User Owner { get; set; }
 
         [Required]
         [ForeignKey(nameof(NFTCollection))]

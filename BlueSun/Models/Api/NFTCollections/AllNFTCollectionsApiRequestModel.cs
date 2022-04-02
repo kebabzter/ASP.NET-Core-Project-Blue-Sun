@@ -12,7 +12,7 @@
 
         public int CurrentPage { get; init; } = 1;
 
-        public int CollectionsPerPage { get; init; } = 4;
+        public int CollectionsPerPage { get; init; } = 8;
 
         public int TotalCollections { get; init; }
     }

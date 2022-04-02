@@ -68,6 +68,7 @@
             .NFTCollections
             .Where(c => c.Artist.UserId == userId));
 
+
         public bool IsByArtist(int collectionId, int artistId)
         => this.data
             .NFTCollections

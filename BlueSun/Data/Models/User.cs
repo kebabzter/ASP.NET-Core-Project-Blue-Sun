@@ -15,6 +15,6 @@
         [Column(TypeName = "decimal(5,2)")]
         public decimal Balance { get; set; }
 
-        //public IEnumerable<NFT> NFTs { get; init; } = new List<NFT>();
+        public ICollection<NFT> NFTs { get; init; } = new List<NFT>();
     }
 }

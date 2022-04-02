@@ -52,7 +52,7 @@
 
             this.TempData[GlobalMessageKey] = "Thank you for becoming an artist!";
 
-            return RedirectToAction("All", "NFTCollections");
+            return RedirectToAction(nameof(NFTCollectionsController.All), "NFTCollections");
         }
     }
 }
