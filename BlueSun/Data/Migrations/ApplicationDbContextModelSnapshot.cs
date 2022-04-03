@@ -49,7 +49,7 @@ namespace BlueSun.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Artists");
+                    b.ToTable("Artists", (string)null);
                 });
 
             modelBuilder.Entity("BlueSun.Data.Models.Category", b =>
@@ -67,7 +67,7 @@ namespace BlueSun.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("BlueSun.Data.Models.NFT", b =>
@@ -113,7 +113,7 @@ namespace BlueSun.Data.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("NFTs");
+                    b.ToTable("NFTs", (string)null);
                 });
 
             modelBuilder.Entity("BlueSun.Data.Models.NFTCollection", b =>
@@ -153,7 +153,7 @@ namespace BlueSun.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("NFTCollections");
+                    b.ToTable("NFTCollections", (string)null);
                 });
 
             modelBuilder.Entity("BlueSun.Data.Models.User", b =>
@@ -182,6 +182,9 @@ namespace BlueSun.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(35)
                         .HasColumnType("nvarchar(35)");
+
+                    b.Property<bool>("HasWallet")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");

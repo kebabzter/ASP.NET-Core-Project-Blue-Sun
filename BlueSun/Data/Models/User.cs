@@ -13,8 +13,10 @@
 
         [Range(0, int.MaxValue)]
         [Column(TypeName = "decimal(5,2)")]
-        public decimal Balance { get; set; }
+        public decimal Balance { get; set; } = 100000;
 
         public ICollection<NFT> NFTs { get; init; } = new List<NFT>();
+
+        public bool HasWallet { get; set; }
     }
 }

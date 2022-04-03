@@ -11,7 +11,6 @@
     public class NFTsController : Controller
     {
         private readonly BlueSunDbContext data;
-        private readonly INFTCollectionService collections;
 
         public NFTsController(BlueSunDbContext data, INFTCollectionService collections) => this.data = data;
 
@@ -32,6 +31,7 @@
             var nfts = this.data
                 .NFTs
                 .OrderByDescending(n => n.Id)
+                .Where(n => n.NFTCollection.IsPublic == true)
                 .Select(n => new NFTListingViewModel
                 {
                     Id = n.Id,
@@ -78,6 +78,34 @@
             this.data.SaveChanges();
 
             return RedirectToAction(nameof(All));
+        }
+
+        public IActionResult Details(int id)
+        {
+            var nft = this.data.NFTs.First(n => n.Id == id);
+
+            var nftCollection = this.data.NFTCollections.First(c => c.Id == nft.NFTCollectionId);
+
+            var artist = this.data.Artists.First(a => a.Id == nftCollection.ArtistId);
+
+            var owner = this.data.Users.First(u => u.Id == nft.OwnerId);
+
+            var nftData = new NFTDetailsViewModel
+            {
+                Id = nft.Id,
+                Name = nft.Name,
+                Price = nft.Price,
+                Description = nft.Description,
+                OwnerId = nft.Owner.Id,
+                OwnerName = owner.FullName,
+                ArtistName = artist.Name,
+                ArtistId = artist.Id,
+                ImageUrl = nft.ImageUrl,
+                NFTCollectionName = nftCollection.Name,
+                NFTCollectionId = nftCollection.Id
+            };
+
+            return View(nftData);
         }
 
         private IEnumerable<NFTCategoryViewModel> GetNFTCategories()

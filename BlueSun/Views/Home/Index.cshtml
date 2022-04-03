@@ -76,7 +76,7 @@ else
     $('#statistics-button').on('click', ev => {
         $.get('api/statistics', (data) => {
             $('#total-collections').text(data.totalNFTCollections + " Collections");
-            $('#total-users').text(data.totalUsers + " Users");
+            $('#total-users').text((data.totalUsers - 1) + " Users");
             $('#total-nfts').text(data.totalNFTs + " NFTs");
 
             $('#statistics').removeClass('d-none');

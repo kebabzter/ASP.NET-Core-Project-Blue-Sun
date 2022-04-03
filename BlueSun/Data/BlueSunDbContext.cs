@@ -30,7 +30,7 @@
             builder
                 .Entity<NFT>()
                 .HasOne(n => n.Owner)
-                .WithMany(u => u.NFTs)
+                .WithMany(c => c.NFTs)
                 .HasForeignKey(n => n.OwnerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
