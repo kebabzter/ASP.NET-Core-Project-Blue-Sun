@@ -77,7 +77,7 @@ namespace BlueSun.Infrastructure.Extensions
                         Email = adminEmail,
                         UserName = adminEmail,
                         FullName = "Admin",
-                        Balance = 0,
+                        HasWallet = false,
                     };
 
                     await userManager.CreateAsync(user, adminPassword);

@@ -18,6 +18,8 @@
 
         public DbSet<Artist> Artists { get; init; }
 
+        public DbSet<Wallet> Wallets { get; init; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
@@ -28,8 +30,15 @@
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
-                .Entity<User>()
-                .Property(n => n.Balance)
+                .Entity<Wallet>()
+                .HasOne(w => w.User)
+                .WithOne(u => u.Wallet)
+                .HasForeignKey<Wallet>(w => w.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Wallet>()
+                .Property(w => w.Balance)
                 .HasColumnType("decimal(7,2)");
 
             builder

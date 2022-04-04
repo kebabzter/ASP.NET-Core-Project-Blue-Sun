@@ -88,6 +88,8 @@
 
             var artist = this.data.Artists.First(a => a.Id == nftCollection.ArtistId);
 
+            var user = this.data.Users.First(u => u.Id == this.User.Id());
+
             var owner = this.data.Users.First(u => u.Id == nft.OwnerId);
 
             var nftData = new NFTDetailsViewModel
@@ -98,6 +100,7 @@
                 Description = nft.Description,
                 OwnerId = nft.Owner.Id,
                 OwnerName = owner.FullName,
+                UserHasWallet = user.HasWallet,
                 ArtistName = artist.Name,
                 ArtistId = artist.Id,
                 ImageUrl = nft.ImageUrl,
@@ -106,6 +109,27 @@
             };
 
             return View(nftData);
+        }
+
+        [Authorize]
+        public IActionResult ConnectWallet()
+        {
+            var user = this.data.Users.First(u => u.Id == this.User.Id());
+
+            if (user.HasWallet)
+            {
+                return BadRequest();
+            }
+
+            user.HasWallet = true;
+            user.Wallet = new Wallet
+            {
+                Balance = 10000
+            };
+
+            this.data.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
         }
 
         private IEnumerable<NFTCategoryViewModel> GetNFTCategories()

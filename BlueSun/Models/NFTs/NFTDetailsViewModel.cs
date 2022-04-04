@@ -1,7 +1,5 @@
 ﻿namespace BlueSun.Models.NFTs
 {
-    using BlueSun.Data.Models;
-
     public class NFTDetailsViewModel
     {
         public int Id { get; init; }
@@ -13,6 +11,8 @@
         public string OwnerId { get; set; }
 
         public string OwnerName { get; set; }
+
+        public bool UserHasWallet { get; set; }
 
         public string ArtistName { get; init; }
 
