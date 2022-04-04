@@ -1,0 +1,86 @@
+﻿@model NFTDetailsViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="@Model.ImageUrl" class="img-fluid rounded border border-1 border-info" width="500" alt="https://static.vecteezy.com/system/resources/previews/000/375/499/large_2x/question-mark-vector-icon.jpg">
+        </div>
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col">
+                    <h5 class="text-start fw-bold text-primary">
+                        <a class="card-title text-primary text-decoration-none align-middle" asp-controller="NFTCollections" asp-action="Details" asp-route-id="@Model.NFTCollectionId" asp-route-information="@Model.NFTCollectionName">
+                            <span class="align-middle">
+                                @Model.NFTCollectionName
+                            </span class="align-middle">
+                            <span>
+                                <img src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png" width="20" heigth="20" class="img-fluid align-middle" alt="https://static.vecteezy.com/system/resources/previews/000/375/499/large_2x/question-mark-vector-icon.jpg">
+                            </span>
+                        </a>
+                    </h5>
+                </div>
+                <div>
+                    <h2 class="text-start fw-bold mb-2">
+                        @Model.Name
+                    </h2>
+                </div>
+                <div>
+                    <h6 class="text-secondary mb-5">
+                        Owned by 
+                        <a class="card-title text-primary text-decoration-none" asp-controller="Users" asp-action="Profile" asp-route-id="@Model.ArtistId" class="btn stretched-link hidden">@Model.OwnerName</a>
+                    </h6>
+                </div>
+                <div>
+                    <div class="card mb-3" style="max-width: 36rem;">
+                          <div class="card-body border-secondary">
+                            <h6 class="card-title">
+                                <span class="align-middle">
+                                    <h8 class="text-secondary ">Current Price</h8>
+                                </span>
+                            </h6>
+                            <p class="card-text">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <span class="align-middle">
+                                            <img src="https://freepikpsd.com/file/2019/11/game-coin-transparent-png-images-.png" width="40" heigth="40" />
+                                        </span>
+                                    </div>
+                                    <div class="col-md-11">
+                                        <h4>
+                                            <span class="align-middle fw-bold">
+                                                @Model.Price
+                                            </span>
+                                        </h4>
+                                    </div>
+                                    <div class="mt-4">
+                                        <a class="btn btn-primary btn-lg" asp-controller="NFTs" asp-action="Purchase" asp-route-id="@Model.Id">
+                                            <span class="align-middle">
+                                                <img src="https://cdn.discordapp.com/attachments/960121710953254912/960134052969611284/image.png" width="40" heigth="40"/>
+                                            </span>
+                                            <span class="align-middle">
+                                                Buy now
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </p>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="card border-info mb-4 mt-4" style="max-width: 31.3rem;">
+        <div class="card-header">Description</div>
+        <div class="card-body">
+            <h6 class="card-title text-secondary">
+                Created by
+                <a class="card-title text-primary text-decoration-none" asp-controller="Users" asp-action="Profile" asp-route-id="@Model.ArtistId" class="btn stretched-link hidden">@Model.ArtistName</a>
+            </h6>
+            <p class="card-text">@Model.Description</p>
+        </div>
+    </div>
+</div>
