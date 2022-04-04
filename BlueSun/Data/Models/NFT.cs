@@ -11,8 +11,7 @@
         [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
-        [Range(MinPrice, MaxPrice)]
-        [Column(TypeName = "decimal(5,2)")]
+        [Column(TypeName = "decimal(7,2)")]
         public decimal Price { get; set; }
 
         [Required]

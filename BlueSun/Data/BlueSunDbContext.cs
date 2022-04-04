@@ -28,6 +28,11 @@
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
+                .Entity<User>()
+                .Property(n => n.Balance)
+                .HasColumnType("decimal(7,2)");
+
+            builder
                 .Entity<NFT>()
                 .HasOne(n => n.Owner)
                 .WithMany(c => c.NFTs)
@@ -63,7 +68,7 @@
 
             builder.Entity<NFT>()
                 .Property(n => n.Price)
-                .HasColumnType("decimal(5,2)");
+                .HasColumnType("decimal(7,2)");
 
             base.OnModelCreating(builder);
         }

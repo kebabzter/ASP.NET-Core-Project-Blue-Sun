@@ -13,7 +13,7 @@
         [Range(
             MinPrice,
             MaxPrice,
-            ErrorMessage = "Price must be between 0.00 and 10000.00.")]
+            ErrorMessage = "Price must be between 0.00 and 10000.")]
         public decimal Price { get; init; }
 
         [Required]

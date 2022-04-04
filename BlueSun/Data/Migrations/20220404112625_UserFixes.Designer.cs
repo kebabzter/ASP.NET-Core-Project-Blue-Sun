@@ -4,6 +4,7 @@ using BlueSun.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlueSun.Data.Migrations
 {
     [DbContext(typeof(BlueSunDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220404112625_UserFixes")]
+    partial class UserFixes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,7 +105,7 @@ namespace BlueSun.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(7,2)");
+                        .HasColumnType("decimal(5,2)");
 
                     b.HasKey("Id");
 
@@ -165,7 +167,7 @@ namespace BlueSun.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(7,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()

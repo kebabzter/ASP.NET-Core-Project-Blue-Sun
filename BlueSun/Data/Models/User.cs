@@ -11,12 +11,9 @@
         [MaxLength(FullNameMaxLength)]
         public string FullName { get; set; }
 
-        [Range(0, int.MaxValue)]
-        [Column(TypeName = "decimal(5,2)")]
-        public decimal Balance { get; set; } = 100000;
+        [Column(TypeName = "decimal(7,2)")]
+        public decimal Balance { get; set; }
 
         public ICollection<NFT> NFTs { get; init; } = new List<NFT>();
-
-        public bool HasWallet { get; set; }
     }
 }
