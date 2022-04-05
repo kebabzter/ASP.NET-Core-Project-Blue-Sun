@@ -1,21 +1,17 @@
 ﻿namespace BlueSun.Controllers
 {
-    using BlueSun.Data;
-    using BlueSun.Data.Models;
     using BlueSun.Infrastructure.Extensions;
     using BlueSun.Models.Artists;
+    using BlueSun.Services.Artists;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using static WebConstants;
     public class ArtistsController : Controller
     {
-        private readonly BlueSunDbContext data;
+        private readonly IArtistService artists;
 
-        public ArtistsController(BlueSunDbContext data)
-        {
-            this.data = data;
-        }
+        public ArtistsController(IArtistService artists) => this.artists = artists;
 
         [Authorize]
         public IActionResult Become() => View();
@@ -26,9 +22,7 @@
         {
             var userId = this.User.Id();
 
-            var userIdAlreadyArtist = this.data
-                .Artists
-                .Any(a => a.UserId == userId);
+            var userIdAlreadyArtist = artists.IsArtist(userId);
 
             if (userIdAlreadyArtist)
             {
@@ -40,15 +34,7 @@
                 return View(artist);
             }
 
-            var artistData = new Artist
-            {
-                Name = artist.Name,
-                PhoneNumber = artist.PhoneNumber,
-                UserId = userId
-            };
-
-            this.data.Artists.Add(artistData);
-            this.data.SaveChanges();
+            artists.AddArtist(artist.Name, artist.PhoneNumber, userId);
 
             this.TempData[GlobalMessageKey] = "Thank you for becoming an artist!";
 

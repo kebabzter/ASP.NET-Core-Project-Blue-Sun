@@ -7,5 +7,7 @@
         public int IdByUser(string userId);
 
         public string UserById(int id);
+
+        public void AddArtist(string name, string phoneNumber, string userId);
     }
 }

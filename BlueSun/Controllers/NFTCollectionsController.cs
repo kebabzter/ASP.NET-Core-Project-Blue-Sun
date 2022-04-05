@@ -1,7 +1,6 @@
 ﻿namespace BlueSun.Controllers
 {
     using AutoMapper;
-    using BlueSun.Data;
     using BlueSun.Infrastructure.Extensions;
     using BlueSun.Models.NFTCollections;
     using BlueSun.Services.Artists;

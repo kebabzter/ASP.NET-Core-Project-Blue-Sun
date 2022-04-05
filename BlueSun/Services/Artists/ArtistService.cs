@@ -1,6 +1,7 @@
 ﻿namespace BlueSun.Services.Artists
 {
     using BlueSun.Data;
+    using BlueSun.Data.Models;
 
     public class ArtistService : IArtistService
     {
@@ -27,5 +28,18 @@
             .Where(a => a.Id == id)
             .Select(a => a.UserId)
             .FirstOrDefault();
+
+        public void AddArtist(string name, string phoneNumber, string userId)
+        {
+            var artistData = new Artist
+            {
+                Name = name,
+                PhoneNumber = phoneNumber,
+                UserId = userId
+            };
+
+            this.data.Artists.Add(artistData);
+            this.data.SaveChanges();
+        }
     }
 }
