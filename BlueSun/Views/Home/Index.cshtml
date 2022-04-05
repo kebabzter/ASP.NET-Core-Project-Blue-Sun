@@ -20,11 +20,19 @@
 
 @if (Model.Count() > 0)
 {
-    <div class="row text-center mb-3 mt-2">
-        <h2>Latest Collections</h2>
-    </div>
-
-    <div id="carouselExampleIndicators" class="carousel slide border border-4 border-info" data-bs-ride="carousel">
+    <div class="row">
+        <div class="col-md-6">
+            <h1 class="fw-bold mt-5">Discover, collect and sell extraordinary NFTs</h1>
+            <h2 class="text-secondary fw-light mt-4">BlueSun is the world's best and</h2>
+            <h2 class="text-secondary fw-light mb-5">largest NFT marketplace</h2>
+            <a class="text-light fw-bold btn btn-primary btn-lg rounded-4" style="width: 150px" asp-area="" asp-controller="NFTCollections" asp-action="All">Explore</a>
+            @if (!User.IsAdmin())
+            {
+                <a class="text-primary fw-bold btn btn-light btn-lg border border-primary rounded-4 ml-1" style="width: 150px" asp-area="" asp-controller="NFTCollections" asp-action="Create">Create</a>
+            }
+        </div>
+        <div class="col-md-6"> 
+            <div id="carouselExampleIndicators" class="carousel slide border border-4 border-info d-block " heigth="350" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -35,7 +43,7 @@
             {
                 var nftCollection = Model[i];
                 <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
-                    <img src="@nftCollection.ImageUrl" height="700" class="d-block w-100" alt="@nftCollection.Name">
+                    <img src="@nftCollection.ImageUrl" height="350" class="d-block w-100" alt="@nftCollection.Name">
                     <div class="carousel-caption d-none d-md-block">
                         <h5><a class="btn btn-primary" asp-controller="NFTCollections" asp-action="Details" asp-route-id="@nftCollection.Id" asp-route-information="@nftCollection.GetInformation()">@nftCollection.Name</a></h5>
                     </div>
@@ -51,6 +59,9 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
+        </div>
+    </div>
+    
 }
 else
 {
@@ -58,7 +69,7 @@ else
 }
 
 <div class="row mt-4">
-    <div class="col-12  text-center">
+    <div class="col-12 text-center mt-5">
         <button class="btn btn-primary" id="statistics-button">Show Statistics</button>
     </div>
 </div>

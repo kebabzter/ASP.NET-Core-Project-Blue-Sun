@@ -4,24 +4,29 @@
     using BlueSun.Data.Models;
     using BlueSun.Infrastructure.Extensions;
     using BlueSun.Models.NFTs;
-    using BlueSun.Services.NFTCollections;
+    using BlueSun.Services.NFTs;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class NFTsController : Controller
     {
         private readonly BlueSunDbContext data;
+        private readonly INFTsService nfts;
 
-        public NFTsController(BlueSunDbContext data, INFTCollectionService collections) => this.data = data;
+        public NFTsController(BlueSunDbContext data, INFTsService nfts)
+        {
+            this.data = data;
+            this.nfts = nfts;
+        }
 
         [Authorize]
         public IActionResult Add(int id)
         {
-            var collection = this.data.NFTCollections.First(c => c.Id == id);
+            string collectionName = nfts.GetCollectionName(id);
 
             return View(new AddNFTFormModel
                {
-                   CollectionName = collection.Name,
+                   CollectionName = collectionName,
                    Categories = this.GetNFTCategories()
                });
         }
@@ -91,6 +96,13 @@
 
             var user = this.data.Users.First(u => u.Id == this.User.Id());
 
+            var userWallet = this.data.Wallets.FirstOrDefault(w => w.UserId == this.User.Id());
+
+            if (userWallet == null)
+            {
+                userWallet = new Wallet { Balance = 0 };
+            }
+
             var owner = this.data.Users.First(u => u.Id == nft.OwnerId);
 
             var nftData = new NFTDetailsViewModel
@@ -103,6 +115,7 @@
                 OwnerName = owner.FullName,
                 UserHasWallet = user.HasWallet,
                 UserIsOwner = user.Id == owner.Id,
+                UserBalanceAfterPurchase = userWallet.Balance - nft.Price,
                 ArtistName = artist.Name,
                 ArtistId = artist.Id,
                 ArtistUserId = artist.UserId,

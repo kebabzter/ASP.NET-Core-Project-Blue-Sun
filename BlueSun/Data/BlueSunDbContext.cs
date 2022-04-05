@@ -39,7 +39,7 @@
             builder
                 .Entity<Wallet>()
                 .Property(w => w.Balance)
-                .HasColumnType("decimal(7,2)");
+                .HasColumnType("decimal(9,2)");
 
             builder
                 .Entity<NFT>()

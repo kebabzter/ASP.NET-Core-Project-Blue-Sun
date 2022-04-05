@@ -4,6 +4,8 @@
     ViewBag.Title = "Explore Collections";
 }
 
+<h5 class="text-secondary mb-4">@($"{@Model.Count()} {(@Model.Count() > 1 ? "items" : "item")} ")</h5>
+
 <div class="row">
     @foreach (var nft in Model)
     {

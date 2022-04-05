@@ -11,7 +11,7 @@
 
         public User User { get; set;  }
 
-        [Column(TypeName = "decimal(7,2)")]
+        [Column(TypeName = "decimal(9,2)")]
         public decimal Balance { get; set; }
     }
 }

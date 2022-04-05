@@ -14,6 +14,8 @@
 
         public bool UserHasWallet { get; set; }
 
+        public decimal UserBalanceAfterPurchase { get; set; }
+
         public bool UserIsOwner { get; set; }
 
         public string ArtistName { get; init; }

@@ -238,7 +238,7 @@ namespace BlueSun.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(7,2)");
+                        .HasColumnType("decimal(9,2)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");

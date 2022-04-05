@@ -59,10 +59,10 @@
                                             </span>
                                         </h4>
                                     </div>
-                                    <div class="mt-4">
+                                    <div class="mt-3">
                                         
                                         
-                                        @if (@Model.UserHasWallet && !userIsAdmin)
+                                        @if (@Model.UserHasWallet &&!userIsAdmin)
                                         {
                                             if(!@Model.UserIsOwner)
                                             {
@@ -88,21 +88,40 @@
                                             }
 
 
-                                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                          <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                              <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                              </div>
-                                              <div class="modal-body">
-                                                Are you sure you want to purchase this item?
-                                              </div>
-                                              <div class="modal-footer">
-                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
-                                                <a class="btn btn-primary" asp-controller="Users" asp-action="Purchase" asp-route-id="@Model.Id">Yes</a>
-                                              </div>
-                                            </div>
+                                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        @if(@Model.UserBalanceAfterPurchase < 0)
+                                                        {
+                                                            <div class="modal-header">
+                                                              <h5 class="modal-title text-danger" id="exampleModalLabel">Insufficient funds!</h5>
+                                                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                              You can not purchase this item due to lack of funds!
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="modal-header">
+                                                              <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                                                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                              Are you sure you want to purchase this item?
+                                                            </div>
+                                                            <div class="modal-body text-secondary">
+                                                                @($"Balance after purchase: {(@Model.UserBalanceAfterPurchase)}")
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                                                              <a class="btn btn-primary" asp-controller="Users" asp-action="Purchase" asp-route-id="@Model.Id">Yes</a>
+                                                            </div>
+                                                        }
+                                                    </div>
                                           </div>
                                             </div>
                                         }
@@ -134,9 +153,10 @@
 
                                             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
                                               <div class="offcanvas-header">
-                                                <h5 id="offcanvasRightLabel">Connect your wallet</h5>
+                                                <h5 id="offcanvasRightLabel">Your wallet</h5>
                                                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                                               </div>
+
                                               <div class="offcanvas-body">
                                                   <span>Connect your wallet in order to be able to purchase items!</span>
                                                   <div>

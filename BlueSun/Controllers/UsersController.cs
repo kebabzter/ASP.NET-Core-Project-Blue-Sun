@@ -54,14 +54,16 @@
             var user = this.data.Users.First(u => u.Id == this.User.Id());
             var wallet = this.data.Wallets.First(u => u.UserId == this.User.Id());
             var nft = this.data.NFTs.First(n => n.Id == id);
+            var owner = this.data.Users.First(u => u.Id == nft.OwnerId);
+            var ownerWallet = this.data.Wallets.First(w => w.UserId == owner.Id);
 
             if (nft.Price > wallet.Balance)
             {
-                TempData[GlobalMessageKey] = "Insufficient funds!";
                 return RedirectToAction("Details", "NFTs", new { id });
             }
 
             nft.OwnerId = this.User.Id();
+            ownerWallet.Balance += nft.Price;
             nft.Owner = user;
             user.Wallet.Balance -= nft.Price;
 
