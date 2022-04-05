@@ -105,6 +105,7 @@
                 UserIsOwner = user.Id == owner.Id,
                 ArtistName = artist.Name,
                 ArtistId = artist.Id,
+                ArtistUserId = artist.UserId,
                 ImageUrl = nft.ImageUrl,
                 NFTCollectionName = nftCollection.Name,
                 NFTCollectionId = nftCollection.Id

@@ -4,29 +4,24 @@
     using BlueSun.Data;
     using BlueSun.Infrastructure.Extensions;
     using BlueSun.Models.NFTCollections;
-    using BlueSun.Models.NFTs;
     using BlueSun.Services.Artists;
     using BlueSun.Services.NFTCollections;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System.Linq;
 
     using static WebConstants;
 
     public class NFTCollectionsController : Controller
     {
         private readonly INFTCollectionService collections;
-        private readonly BlueSunDbContext data;
         private readonly IArtistService artists;
         private readonly IMapper mapper;
 
         public NFTCollectionsController(
             INFTCollectionService collections,
-            BlueSunDbContext data,
             IArtistService artists, 
             IMapper mapper)
         {
-            this.data = data;
             this.collections = collections;
             this.artists = artists;
             this.mapper = mapper;
@@ -124,27 +119,16 @@
                 return BadRequest();
             }
 
-            var nftsQuery = this.data.NFTs.Where(n => n.NFTCollectionId == id).AsQueryable();
+            var nfts = collections.GetNFTs(id);
 
-            var nfts = nftsQuery
-                .Select(n => new NFTListingViewModel
-                {
-                    Id = n.Id,
-                    Name = n.Name,
-                    ImageUrl = n.ImageUrl,
-                    Price = n.Price,
-                    Category = n.Category.Name
-                })
-                .ToList();
-
-            var artist = this.data.Artists.FirstOrDefault(a => a.Id == collection.ArtistId);
+            var artistUserId = artists.UserById(collection.ArtistId);
 
             return View(new CollectionNFTsQueryModel
             {
                 Name = collection.Name,
                 NFTs = nfts,
                 Id = collection.Id,
-                ArtistUserId = artist.UserId,
+                ArtistUserId = artistUserId,
                 ImageUrl = collection.ImageUrl,
             });
 
@@ -232,21 +216,14 @@
         {
             var artistId = this.artists.IdByUser(this.User.Id());
 
-            var collection = this.data.NFTCollections.First(c => c.Id == id); 
-
-            if (artistId != collection.ArtistId && !User.IsAdmin())
+            if (!collections.IsByArtist(id,artistId) && !User.IsAdmin())
             {
                 return Unauthorized();
             }
 
-            var nftsToRemove = this.data.NFTs.Where(n => n.NFTCollectionId == collection.Id);
+            collections.Delete(id);
 
-            foreach (var nft in nftsToRemove)
-            {
-                this.data.NFTs.Remove(nft);
-            }
-            this.data.NFTCollections.Remove(collection);
-            this.data.SaveChanges();
+            TempData[GlobalMessageKey] = "You successfully deleted your NFT collection!";
 
             return RedirectToAction(nameof(MyCollections));
         }

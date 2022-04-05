@@ -34,7 +34,7 @@
                 <div>
                     <h6 class="text-secondary mb-5">
                         Owned by 
-                        <a class="card-title text-primary text-decoration-none" asp-controller="Users" asp-action="Profile" asp-route-id="@Model.OwnerId" class="btn stretched-link hidden">@Model.OwnerName</a>
+                        <a class="card-title text-primary text-decoration-none" asp-controller="Users" asp-action="PersonalCollection" asp-route-id="@Model.OwnerId" class="btn stretched-link hidden">@Model.OwnerName</a>
                     </h6>
                 </div>
                 <div>
@@ -162,7 +162,7 @@
         <div class="card-body">
             <h6 class="card-title text-secondary">
                 Created by
-                <a class="card-title text-primary text-decoration-none" asp-controller="Users" asp-action="Profile" asp-route-id="@Model.ArtistId" class="btn stretched-link hidden">@Model.ArtistName</a>
+                <a class="card-title text-primary text-decoration-none" asp-controller="Users" asp-action="PersonalCollection" asp-route-id="@Model.ArtistUserId" class="btn stretched-link hidden">@Model.ArtistName</a>
             </h6>
             <p class="card-text">@Model.Description</p>
         </div>

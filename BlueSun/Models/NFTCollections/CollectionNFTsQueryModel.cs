@@ -1,6 +1,6 @@
 ﻿namespace BlueSun.Models.NFTCollections
 {
-    using BlueSun.Models.NFTs;
+    using BlueSun.Services.NFTs.Models;
 
     public class CollectionNFTsQueryModel
     {
@@ -8,7 +8,7 @@
 
         public string Name { get; init; }
 
-        public IEnumerable<NFTListingViewModel> NFTs { get; init; }
+        public IEnumerable<NFTListingServiceModel> NFTs { get; init; }
 
         public string ArtistUserId { get; init; }
 

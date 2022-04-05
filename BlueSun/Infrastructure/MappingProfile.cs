@@ -4,6 +4,7 @@
     using BlueSun.Data.Models;
     using BlueSun.Models.NFTCollections;
     using BlueSun.Services.NFTCollections.Models;
+    using BlueSun.Services.NFTs.Models;
 
     public class MappingProfile : Profile
     {
@@ -13,6 +14,9 @@
 
             this.CreateMap<NFTCollection, LatestNFTCollectionServiceModel>();
             this.CreateMap<NFTCollectionDetailsServiceModel, NFTCollectionFormModel>();
+
+            this.CreateMap<NFT, NFTListingServiceModel>();
+
 
             this.CreateMap<NFTCollection, NFTCollectionServiceModel>()
                 .ForMember(c => c.CategoryName, cfg => cfg.MapFrom(c => c.Category.Name));

@@ -4,6 +4,7 @@
     using BlueSun.Data.Models;
     using BlueSun.Infrastructure.Extensions;
     using BlueSun.Models.NFTs;
+    using BlueSun.Models.Users;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -19,11 +20,13 @@
             this.data = data;
         }
 
-        public IActionResult PersonalCollection()
+        public IActionResult PersonalCollection(string id)
         {
-            var nfts = this.data
+            var user = this.data.Users.First(u => u.Id == id);
+
+            var nftsData = this.data
                .NFTs
-               .Where(n => n.OwnerId == this.User.Id())
+               .Where(n => n.OwnerId == id)
                .OrderByDescending(n => n.Id)
                .Where(n => n.NFTCollection.IsPublic == true)
                .Select(n => new NFTListingViewModel
@@ -37,7 +40,13 @@
                })
                .ToList();
 
-            return View(nfts);
+            var userData = new UsersPersonalCollectionViewModel
+            {
+                UserName = user.FullName,
+                nfts = nftsData,
+            };
+
+            return View(userData);
         }
 
         public IActionResult Purchase(int id)

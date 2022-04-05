@@ -2,6 +2,7 @@
 {
     using BlueSun.Models.NFTCollections;
     using BlueSun.Services.NFTCollections.Models;
+    using BlueSun.Services.NFTs.Models;
 
     public interface INFTCollectionService
     {
@@ -15,6 +16,8 @@
             bool publicOnly = true);
 
         IEnumerable<LatestNFTCollectionServiceModel> Latest();
+
+        IEnumerable<NFTListingServiceModel> GetNFTs(int collectionId);
 
         int Create(
             string name,
@@ -30,6 +33,8 @@
             string imageUrl,
             int categoryId,
             bool isPublic);
+
+        void Delete(int id);
 
         NFTCollectionDetailsServiceModel Details(int collectionId);
 

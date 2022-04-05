@@ -6,6 +6,7 @@
     using BlueSun.Data.Models;
     using BlueSun.Models.NFTCollections;
     using BlueSun.Services.NFTCollections.Models;
+    using BlueSun.Services.NFTs.Models;
     using System.Collections.Generic;
 
     public class NFTCollectionService : INFTCollectionService
@@ -159,5 +160,38 @@
             => collectionQuery
             .ProjectTo<NFTCollectionServiceModel>(this.mapper)
             .ToList();
+
+        public IEnumerable<NFTListingServiceModel> GetNFTs(int collectionId) 
+            => this.data
+                .NFTs
+                .Where(n => n.NFTCollectionId == collectionId)
+                .ProjectTo<NFTListingServiceModel>(this.mapper)
+                .ToList();
+
+        public void Delete(int id)
+        {
+            var collection = this.data
+                .NFTCollections
+                .Where(c => c.Id == id)
+                .FirstOrDefault();
+
+            RemoveNFTs(collection.Id);
+
+            this.data.NFTCollections.Remove(collection);
+
+            this.data.SaveChanges();
+        }
+
+        private void RemoveNFTs(int collectionId)
+        {
+            var nftsToRemove = this.data.NFTs.Where(n => n.NFTCollectionId == collectionId);
+
+            foreach (var nft in nftsToRemove)
+            {
+                this.data.NFTs.Remove(nft);
+            }
+
+            this.data.SaveChanges();
+        }
     }
 }

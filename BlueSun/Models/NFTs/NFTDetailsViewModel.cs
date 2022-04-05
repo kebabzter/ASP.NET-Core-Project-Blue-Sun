@@ -20,6 +20,8 @@
 
         public int ArtistId { get; init; }
 
+        public string ArtistUserId { get; init; }
+
         public string Description { get; init; }
 
         public string ImageUrl { get; init; }

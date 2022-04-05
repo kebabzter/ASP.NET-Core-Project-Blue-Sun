@@ -29,7 +29,7 @@
                 @if (!userIsAdmin)
                 {
                     <li>
-                        <a class="dropdown-item fw-bold " asp-area="" asp-controller="Users" asp-action="PersonalCollection">Personal Collection</a>
+                        <a class="dropdown-item fw-bold " asp-area="" asp-controller="Users" asp-action="PersonalCollection" asp-route-id="@userId">Personal Collection</a>
                     </li>
                 }
                 @if (!userIsAdmin && !userIsArtist)

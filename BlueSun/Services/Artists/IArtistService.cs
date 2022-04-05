@@ -5,5 +5,7 @@
         public bool IsArtist(string userId);
 
         public int IdByUser(string userId);
+
+        public string UserById(int id);
     }
 }

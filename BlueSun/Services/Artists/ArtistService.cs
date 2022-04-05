@@ -20,5 +20,12 @@
                 .Where(a => a.UserId == userId)
                 .Select(a => a.Id)
                 .FirstOrDefault();
+
+        public string UserById(int id)
+        => this.data
+            .Artists
+            .Where(a => a.Id == id)
+            .Select(a => a.UserId)
+            .FirstOrDefault();
     }
 }
