@@ -45,9 +45,18 @@
     <div class="container">
         @if (TempData.ContainsKey(WebConstants.GlobalMessageKey))
         {
-            <div class="alert alert-success" role="alert">
-                @TempData[WebConstants.GlobalMessageKey]
-            </div>
+            if(TempData[WebConstants.GlobalMessageKey].ToString().Contains("Insufficient"))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @TempData[WebConstants.GlobalMessageKey]
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-success" role="alert">
+                    @TempData[WebConstants.GlobalMessageKey]
+                </div>
+            }
         }
         <main role="main" class="pb-3">
             @RenderBody()

@@ -80,6 +80,7 @@
             return RedirectToAction(nameof(All));
         }
 
+        [Authorize]
         public IActionResult Details(int id)
         {
             var nft = this.data.NFTs.First(n => n.Id == id);
@@ -101,6 +102,7 @@
                 OwnerId = nft.Owner.Id,
                 OwnerName = owner.FullName,
                 UserHasWallet = user.HasWallet,
+                UserIsOwner = user.Id == owner.Id,
                 ArtistName = artist.Name,
                 ArtistId = artist.Id,
                 ImageUrl = nft.ImageUrl,
@@ -112,7 +114,7 @@
         }
 
         [Authorize]
-        public IActionResult ConnectWallet()
+        public IActionResult ConnectWallet(int id)
         {
             var user = this.data.Users.First(u => u.Id == this.User.Id());
 
@@ -129,7 +131,7 @@
 
             this.data.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Details", "NFTs", new { id });
         }
 
         private IEnumerable<NFTCategoryViewModel> GetNFTCategories()

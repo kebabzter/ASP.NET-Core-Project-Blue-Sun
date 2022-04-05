@@ -7,6 +7,8 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    using static WebConstants;
+
     [Authorize]
     public class UsersController : Controller
     {
@@ -46,6 +48,7 @@
 
             if (nft.Price > wallet.Balance)
             {
+                TempData[GlobalMessageKey] = "Insufficient funds!";
                 return RedirectToAction("Details", "NFTs", new { id });
             }
 
@@ -55,13 +58,14 @@
 
             this.data.SaveChanges();
 
+            TempData[GlobalMessageKey] = $"You successfully purchased {nft.Name}!";
             return RedirectToAction("Details", "NFTs", new { id });
         }
 
         //TODO: Finish wallet system if possible!
 
         [Authorize]
-        public IActionResult ConnectWallet()
+        public IActionResult ConnectWallet(int id)
         {
             var user = this.data.Users.First(u => u.Id == this.User.Id());
 
@@ -78,7 +82,7 @@
 
             this.data.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Details", "NFTs", new { id });
         }
     }
 }

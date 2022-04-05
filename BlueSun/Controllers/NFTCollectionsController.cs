@@ -114,6 +114,7 @@
             return RedirectToAction(nameof(Details), new { id = collectionId, information = nftCollection.GetInformation()});
         }
 
+        [Authorize]
         public IActionResult Details(int id, string information)
          {
             var collection = this.collections.Details(id);
