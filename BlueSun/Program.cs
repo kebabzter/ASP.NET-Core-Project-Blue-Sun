@@ -5,6 +5,7 @@ using BlueSun.Services.Artists;
 using BlueSun.Services.NFTCollections;
 using BlueSun.Services.NFTs;
 using BlueSun.Services.Statistics;
+using BlueSun.Services.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -43,6 +44,7 @@ builder.Services.AddTransient<IStatisticsService, StatisticsService>();
 builder.Services.AddTransient<INFTCollectionService, NFTCollectionService>();
 builder.Services.AddTransient<IArtistService, ArtistService>();
 builder.Services.AddTransient<INFTsService, NFTsService>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 var app = builder.Build();
 

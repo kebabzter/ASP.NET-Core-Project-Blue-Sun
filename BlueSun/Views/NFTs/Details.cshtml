@@ -114,7 +114,15 @@
                                                               Are you sure you want to purchase this item?
                                                             </div>
                                                             <div class="modal-body text-secondary">
-                                                                @($"Balance after purchase: {(@Model.UserBalanceAfterPurchase)}")
+                                                                <span class="align-middle">
+                                                                Balance after purchase: 
+                                                            </span>
+                                                            <span class="align-middle fw-bold text-black">
+                                                                @Model.UserBalanceAfterPurchase
+                                                            </span>
+                                                            <span class="align-middle">
+                                                                <img src="https://freepikpsd.com/file/2019/11/game-coin-transparent-png-images-.png" width="25" heigth="25" />
+                                                            </span>
                                                             </div>
                                                             <div class="modal-footer">
                                                               <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
@@ -160,7 +168,7 @@
                                               <div class="offcanvas-body">
                                                   <span>Connect your wallet in order to be able to purchase items!</span>
                                                   <div>
-                                                      <a class="btn btn-primary" asp-controller="NFTs" asp-action="ConnectWallet" asp-route-id="@Model.Id">Connect</a>
+                                                      <a class="btn btn-primary" asp-controller="Users" asp-action="ConnectWallet" asp-route-id="@Model.Id">Connect</a>
                                                   </div>
                                               </div>
                                             </div>

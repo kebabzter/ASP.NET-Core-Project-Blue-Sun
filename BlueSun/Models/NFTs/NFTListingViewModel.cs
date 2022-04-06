@@ -1,6 +1,5 @@
 ﻿namespace BlueSun.Models.NFTs
 {
-    using BlueSun.Data.Models;
 
     public class NFTListingViewModel
     {

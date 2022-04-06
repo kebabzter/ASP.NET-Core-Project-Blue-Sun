@@ -5,6 +5,7 @@
     using BlueSun.Infrastructure.Extensions;
     using BlueSun.Models.NFTs;
     using BlueSun.Services.NFTs;
+    using BlueSun.Services.NFTs.Models;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -33,22 +34,9 @@
 
         public IActionResult All()
         {
-            var nfts = this.data
-                .NFTs
-                .OrderByDescending(n => n.Id)
-                .Where(n => n.NFTCollection.IsPublic == true)
-                .Select(n => new NFTListingViewModel
-                {
-                    Id = n.Id,
-                    Name = n.Name,
-                    Price = n.Price,
-                    ImageUrl = n.ImageUrl,
-                    Category = n.Category.Name,
-                    NFTCollectionName = n.NFTCollection.Name
-                })
-                .ToList();
+            var nftsData = nfts.All();
 
-            return View(nfts);
+            return View(new AllNFTsModel { NFTs = nftsData });
         }
 
         [HttpPost]
@@ -65,22 +53,7 @@
 
             var userId = this.User.Id();
 
-            var collection = this.data.NFTCollections.First(c => c.Id == id);
-
-            var nftData = new NFT
-            {
-                Name = nft.Name,
-                Description = nft.Description,
-                Price = nft.Price,
-                ImageUrl = nft.ImageUrl,
-                CategoryId = collection.CategoryId,
-                NFTCollectionId = id,
-                OwnerId = userId
-            };
-
-
-            this.data.NFTs.Add(nftData);
-            this.data.SaveChanges();
+            nfts.Add(nft, id, userId);
 
             return RedirectToAction(nameof(All));
         }

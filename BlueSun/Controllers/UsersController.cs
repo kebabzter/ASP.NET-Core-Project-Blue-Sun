@@ -20,6 +20,7 @@
             this.data = data;
         }
 
+        [Authorize]
         public IActionResult PersonalCollection(string id)
         {
             var user = this.data.Users.First(u => u.Id == id);
@@ -49,6 +50,20 @@
             return View(userData);
         }
 
+        [Authorize]
+        public IActionResult FillWallet()
+        {
+            var wallet = this.data.Wallets.First(u => u.UserId == this.User.Id());
+
+            wallet.Balance += 10000;
+
+            this.data.SaveChanges();
+
+            TempData[GlobalMessageKey] = $"You successfully added funds to your wallet!";
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
         public IActionResult Purchase(int id)
         {
             var user = this.data.Users.First(u => u.Id == this.User.Id());
@@ -76,7 +91,7 @@
         //TODO: Finish wallet system if possible!
 
         [Authorize]
-        public IActionResult ConnectWallet(int id)
+        public IActionResult ConnectWallet()
         {
             var user = this.data.Users.First(u => u.Id == this.User.Id());
 
@@ -93,7 +108,7 @@
 
             this.data.SaveChanges();
 
-            return RedirectToAction("Details", "NFTs", new { id });
+            return RedirectToAction("Index", "Home");
         }
     }
 }

@@ -5,18 +5,27 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 @inject IArtistService Artists
+@inject IUserService Users
+
+<style>
+        a{
+            cursor:pointer
+        }
+        li{
+            cursor:pointer
+        }
+    </style>
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-
         var userId = User.Id();
         var userIsArtist = Artists.IsArtist(userId);
         var userIsAdmin = User.IsAdmin();
 
-        <li class="nav-item dropstart" style="width: 70px;">
+        <li class="nav-item dropstart" style="width: 60px;">
             <a class="nav-link dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://cdn-icons-png.flaticon.com/512/709/709722.png" alt="" width="30" height="30">
+                <img src="https://cdn.discordapp.com/attachments/960121710953254912/961201532127309834/unknown.png" alt="" width="40" height="40">
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li><a class="dropdown-item fw-bold" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage Account</a></li>
@@ -31,6 +40,10 @@
                     <li>
                         <a class="dropdown-item fw-bold " asp-area="" asp-controller="Users" asp-action="PersonalCollection" asp-route-id="@userId">Personal Collection</a>
                     </li>
+                }
+                @if (!userIsAdmin)
+                {
+                    
                 }
                 @if (!userIsAdmin && !userIsArtist)
                 {
@@ -48,10 +61,10 @@
             </ul>
         </li>
 
-        <li class="nav-item" style="width: 60px;">
+        <li class="nav-item mt-1 ml-1" style="width: 45px;">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button type="submit" class="nav-link btn btn-link text-dark">
-                    <img src="https://cdn-icons-png.flaticon.com/512/660/660350.png" alt="" width="30" height="30">
+                    <img src="https://cdn.discordapp.com/attachments/960121710953254912/961202478135787530/unknown.png" alt="" width="30" height="30">
                 </button>
             </form>
         </li>
@@ -66,3 +79,65 @@
         </li>
     }
 </ul>
+
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <a class="ml-1" data-bs-toggle="modal" data-bs-target="#walletModal" style="width: 40px">
+    <img src="https://cdn.discordapp.com/attachments/960121710953254912/960132881194291210/unknown.png" alt="" height="40" width="40"/>
+    </a>
+
+    var balance = Users.GetBalanceByUserId(User.Id());
+    @if (balance == -1)
+{
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="yourWalletConnectLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <span>Connect your wallet in order to be able to purchase items!</span>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <div>
+                  <a class="btn btn-primary" asp-controller="Users" asp-action="ConnectWallet">Connect</a>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="modal fade" id="walletModal" tabindex="-1" aria-labelledby="yourWalletLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="yourWalletLabel">Your wallet</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span class="align-middle">
+                    Your current balance is: 
+                </span>
+                <span class="align-middle fw-bold">
+                    @balance
+                </span>
+                <span class="align-middle">
+                    <img src="https://freepikpsd.com/file/2019/11/game-coin-transparent-png-images-.png" width="25" heigth="25" />
+                </span>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <a type="button" class="btn btn-primary" asp-controller="Users" asp-action="FillWallet">Fill wallet</a>
+            </div>
+          </div>
+        </div>
+    </div>
+}
+}
+
