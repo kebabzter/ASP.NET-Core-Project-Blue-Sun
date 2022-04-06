@@ -64,7 +64,7 @@
                                         
                                         @if (@Model.UserHasWallet &&!userIsAdmin)
                                         {
-                                            if(!@Model.UserIsOwner)
+                                            if(!@Model.UserIsOwner && @Model.IsForSale)
                                             {
                                                 <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                     <span class="align-middle">
@@ -174,7 +174,48 @@
                                             </div>
                                         }
                                     </div>
+
                                 </div>
+                                @if (@Model.UserIsOwner)
+                                        {
+                                    @if(!@Model.IsForSale)
+                                    {
+                                        <button type="button" class="btn btn-info float-end ms-3 text-white" data-bs-toggle="modal" data-bs-target="#sell">
+                                          Sell
+                                        </button>
+                                        
+                                        <div class="modal fade" id="sell" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                          <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Sell your item</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                              </div>
+                                              <div class="modal-body">
+                                                <form method="post">
+                                                  <div class="mb-3">
+                                                      <label asp-for="Price"></label>
+                                                      <input asp-for="Price" class="form-control">
+                                                      <span asp-validation-for="Price" class="small text-danger"> </span>
+                                                  </div>
+
+                                                  <div class="d-grid d-md-block mt-3">
+                                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                      <button class="btn btn-primary" asp-controller="NFTs" asp-action="ForSale" asp-route-id="@Model.Id" type="submit">Sell</button>
+                                                  </div>
+                                                </form>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-md-12">
+                                            <a asp-area="" asp-controller="NFTs" asp-action="TakeFromMarket" asp-route-id="@Model.Id" class="btn btn-info float-end ms-3 text-white">Take from market</a>
+                                        </div>
+                                    }
+                                }
                             </p>
                           </div>
                     </div>

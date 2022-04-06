@@ -55,7 +55,7 @@
         {
             var wallet = this.data.Wallets.First(u => u.UserId == this.User.Id());
 
-            wallet.Balance += 10000;
+            wallet.Balance += 3000;
 
             this.data.SaveChanges();
 

@@ -38,5 +38,7 @@
 
         [Required]
         public string ImageUrl { get; set; }
+
+        public bool IsForSale { get; set; }
     }
 }

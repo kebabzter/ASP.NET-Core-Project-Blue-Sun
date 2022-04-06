@@ -32,6 +32,30 @@
                });
         }
 
+        [HttpPost]
+        public IActionResult ForSale(int id, decimal price)
+        {
+            var nft = this.data.NFTs.FirstOrDefault(n => n.Id == id);
+
+            nft.IsForSale = true;
+            nft.Price = price;
+
+            this.data.SaveChanges();
+
+            return RedirectToAction("Details", "NFTs", new { id });
+        }
+
+        public IActionResult TakeFromMarket(int id)
+        {
+            var nft = this.data.NFTs.FirstOrDefault(n => n.Id == id);
+
+            nft.IsForSale = false;
+
+            this.data.SaveChanges();
+
+            return RedirectToAction("Details", "NFTs", new { id });
+        }
+
         public IActionResult All()
         {
             var nftsData = nfts.All();
@@ -84,6 +108,7 @@
                 Name = nft.Name,
                 Price = nft.Price,
                 Description = nft.Description,
+                IsForSale = nft.IsForSale,
                 OwnerId = nft.Owner.Id,
                 OwnerName = owner.FullName,
                 UserHasWallet = user.HasWallet,

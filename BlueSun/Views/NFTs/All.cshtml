@@ -4,7 +4,7 @@
     ViewBag.Title = "Explore Collections";
 }
 
-<h5 class="text-secondary mb-4">@($"{@Model.NFTs.Count()} {(@Model.NFTs.Count() > 1 ? "items" : "item")} ")</h5>
+<h5 class="text-secondary mb-4">@($"{@Model.NFTs.Count()} {(@Model.NFTs.Count() == 1 ? "item" : "items")} ")</h5>
 
 <div class="row">
     @foreach (var nft in Model.NFTs)
