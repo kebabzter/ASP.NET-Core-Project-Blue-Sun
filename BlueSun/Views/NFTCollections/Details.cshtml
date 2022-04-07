@@ -15,8 +15,21 @@
     var userIsCreator = @Model.ArtistUserId == userId;
 }
 
+<img src="@Model.ImageUrl" style="height:300px; width:1800px; z-index: 0" alt="" class="position position-absolute top-0 start-0"/>
 <div class="row">
-    <h2 class="heading-margin text-center fs-1">@Model.Name</h2>
+    <h2 style="z-index: 1200" class="heading-margin text-center fs-1">@Model.Name</h2>
+    <p class="text-center">
+        <button class="btn btn-info text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Description
+        </button>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body text-secondary text-center">
+            @Model.Description
+        </div>
+    </div>
+
+    <h5 class="text-secondary mb-4 text-start">@($"{@Model.NFTs.Count()} {(@Model.NFTs.Count() == 1 ? "item" : "items")} ")</h5>
 
     @if (Model.NFTs.Count() > 0)
     {

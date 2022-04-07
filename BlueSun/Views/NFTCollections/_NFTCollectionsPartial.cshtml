@@ -37,9 +37,12 @@
                             </div>
                         }
                     </div>
-                    <div class="btn-group mt-1">
+                    @if (!User.IsAdmin() && @ViewBag.AllowCollectionEdit)
+                    {
+                        <div class="btn-group mt-1">
                             <a asp-controller="NFTs" asp-action="Add" asp-route-id="@nftCollection.Id" class="btn btn-success text-white">Add NFT</a>
-                    </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

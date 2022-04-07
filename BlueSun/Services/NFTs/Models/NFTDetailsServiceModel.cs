@@ -1,6 +1,6 @@
-﻿namespace BlueSun.Models.NFTs
+﻿namespace BlueSun.Services.NFTs.Models
 {
-    public class NFTDetailsViewModel
+    public class NFTDetailsServiceModel
     {
         public int Id { get; init; }
 
@@ -33,6 +33,5 @@
         public int NFTCollectionId { get; init; }
 
         public string NFTCollectionName { get; init; }
-
     }
 }

@@ -129,6 +129,7 @@
                 Id = collection.Id,
                 ArtistUserId = artistUserId,
                 ImageUrl = collection.ImageUrl,
+                Description = collection.Description
             });
 
         }

@@ -33,7 +33,5 @@
         public string CollectionName { get; set; }
 
         public NFTCollection NFTCollection { get; init; }
-
-        public IEnumerable<NFTCategoryViewModel> Categories { get; set; }
     }
 }

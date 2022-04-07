@@ -1,23 +1,23 @@
 ﻿namespace BlueSun.Controllers
 {
-    using BlueSun.Data;
-    using BlueSun.Data.Models;
+    using AutoMapper;
     using BlueSun.Infrastructure.Extensions;
     using BlueSun.Models.NFTs;
     using BlueSun.Services.NFTs;
-    using BlueSun.Services.NFTs.Models;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class NFTsController : Controller
     {
-        private readonly BlueSunDbContext data;
         private readonly INFTsService nfts;
+        private readonly IMapper mapper;
 
-        public NFTsController(BlueSunDbContext data, INFTsService nfts)
+        public NFTsController(
+            INFTsService nfts, 
+            IMapper mapper)
         {
-            this.data = data;
             this.nfts = nfts;
+            this.mapper = mapper;
         }
 
         [Authorize]
@@ -27,31 +27,21 @@
 
             return View(new AddNFTFormModel
                {
-                   CollectionName = collectionName,
-                   Categories = this.GetNFTCategories()
+                   CollectionName = collectionName
                });
         }
 
         [HttpPost]
         public IActionResult ForSale(int id, decimal price)
         {
-            var nft = this.data.NFTs.FirstOrDefault(n => n.Id == id);
-
-            nft.IsForSale = true;
-            nft.Price = price;
-
-            this.data.SaveChanges();
+            nfts.ForSale(id, price);
 
             return RedirectToAction("Details", "NFTs", new { id });
         }
 
         public IActionResult TakeFromMarket(int id)
         {
-            var nft = this.data.NFTs.FirstOrDefault(n => n.Id == id);
-
-            nft.IsForSale = false;
-
-            this.data.SaveChanges();
+            nfts.TakeFromMarket(id);
 
             return RedirectToAction("Details", "NFTs", new { id });
         }
@@ -60,18 +50,15 @@
         {
             var nftsData = nfts.All();
 
-            return View(new AllNFTsModel { NFTs = nftsData });
+            return View(nftsData);
         }
 
         [HttpPost]
         [Authorize]
         public IActionResult Add(AddNFTFormModel nft, int id)
         {
-
             if (!ModelState.IsValid)
             {
-                nft.Categories = this.GetNFTCategories();
-
                 return View(nft);
             }
 
@@ -85,75 +72,26 @@
         [Authorize]
         public IActionResult Details(int id)
         {
-            var nft = this.data.NFTs.First(n => n.Id == id);
+            var userId = this.User.Id();
 
-            var nftCollection = this.data.NFTCollections.First(c => c.Id == nft.NFTCollectionId);
+            var nftDetails = nfts.Details(id, userId);
 
-            var artist = this.data.Artists.First(a => a.Id == nftCollection.ArtistId);
-
-            var user = this.data.Users.First(u => u.Id == this.User.Id());
-
-            var userWallet = this.data.Wallets.FirstOrDefault(w => w.UserId == this.User.Id());
-
-            if (userWallet == null)
-            {
-                userWallet = new Wallet { Balance = 0 };
-            }
-
-            var owner = this.data.Users.First(u => u.Id == nft.OwnerId);
-
-            var nftData = new NFTDetailsViewModel
-            {
-                Id = nft.Id,
-                Name = nft.Name,
-                Price = nft.Price,
-                Description = nft.Description,
-                IsForSale = nft.IsForSale,
-                OwnerId = nft.Owner.Id,
-                OwnerName = owner.FullName,
-                UserHasWallet = user.HasWallet,
-                UserIsOwner = user.Id == owner.Id,
-                UserBalanceAfterPurchase = userWallet.Balance - nft.Price,
-                ArtistName = artist.Name,
-                ArtistId = artist.Id,
-                ArtistUserId = artist.UserId,
-                ImageUrl = nft.ImageUrl,
-                NFTCollectionName = nftCollection.Name,
-                NFTCollectionId = nftCollection.Id
-            };
-
-            return View(nftData);
+            return View(nftDetails);
         }
 
         [Authorize]
         public IActionResult ConnectWallet(int id)
         {
-            var user = this.data.Users.First(u => u.Id == this.User.Id());
+            var userId = this.User.Id();
 
-            if (user.HasWallet)
+            var canConnect = nfts.ConnectWallet(userId);
+
+            if (!canConnect)
             {
                 return BadRequest();
             }
 
-            user.HasWallet = true;
-            user.Wallet = new Wallet
-            {
-                Balance = 10000
-            };
-
-            this.data.SaveChanges();
-
             return RedirectToAction("Details", "NFTs", new { id });
         }
-
-        private IEnumerable<NFTCategoryViewModel> GetNFTCategories()
-        => this.data
-            .Categories
-            .Select(c => new NFTCategoryViewModel
-            {
-                Id = c.Id,
-                Name = c.Name,
-            })
-            .ToList();
     }
 }

@@ -1,4 +1,4 @@
-﻿@model UsersPersonalCollectionViewModel
+﻿@model UsersPersonalCollectionServiceModel
 
 @{
     ViewBag.Title = "Explore Collections";
@@ -7,7 +7,7 @@
 <h1 class="text-center mb-5">@($"{@Model.UserName}'s personal collection")</h1>
 
 <div class="row">
-    @foreach (var nft in Model.nfts)
+    @foreach (var nft in Model.NFTs)
     {
         <div class="col-md-4 col-lg-3 col-sm-4 col-xl-3">
             <div class="card mb-4">
