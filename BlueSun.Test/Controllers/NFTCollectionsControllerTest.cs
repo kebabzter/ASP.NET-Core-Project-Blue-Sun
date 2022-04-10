@@ -8,6 +8,7 @@
     using BlueSun.Services.NFTCollections.Models;
     using BlueSun.Services.Users;
     using BlueSun.Test.Mocks;
+    using BlueSun.Infrastructure.Extensions;
     using Microsoft.AspNetCore.Mvc;
     using System;
     using System.Collections.Generic;
@@ -15,6 +16,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using Xunit;
+    using Microsoft.AspNetCore.Http;
 
     public class NFTCollectionsControllerTest
     {
@@ -31,7 +33,7 @@
 
             var userService = new UserService(data);
 
-            var collectionsController = new NFTCollectionsController(collectionsService, artistsService, mapper, userService);
+            var collectionsController = new NFTCollectionsController(collectionsService, artistsService, mapper, userService, null);
 
             var nftCollections = new List<NFTCollectionServiceModel>();
 
@@ -57,36 +59,100 @@
         [Fact]
         public void DetailsShouldReturnView()
         {
-            var nfts = new List<NFT>();
-
             var collection = new NFTCollection
             {
                 Name = "TestName",
                 ImageUrl = "TestImageUrl",
-                IsPublic = true,
                 Description = "TestDescription",
-                CategoryId = 1,
-                ArtistId = 1,
-                NFTs = nfts,
+                NFTs = new List<NFT>(),
+                ArtistId = 0,
+                CategoryId = 0,
+                IsPublic = true
             };
 
             var data = DatabaseMock.Instance;
-            data.NFTCollections.Add(collection);
-            data.SaveChanges();
 
             var mapper = MapperMock.Instance;
-
             var collectionsService = new NFTCollectionService(data, mapper);
-
             var artistsService = new ArtistService(data);
-
             var userService = new UserService(data);
 
-            var collectionsController = new NFTCollectionsController(collectionsService, artistsService, mapper, userService);
+            var information = collectionsService.Details(collection.Id).GetInformation();
 
-            var result = collectionsController.Details(collection.Id, collection.Name);
+            var collectionsController = new NFTCollectionsController(collectionsService, artistsService, mapper, userService, null);
 
-            Assert.Equal(collection.NFTs.Count, nfts.Count);
+            var result = collectionsController.Details(collection.Id, information);
+
+            Assert.NotNull(result);
+            Assert.IsType<ViewResult>(result);
+
+        }
+
+        [Fact]
+        public void DetailsShouldReturnBadRequestWhenCollectionIsInvalid()
+        {
+            var data = DatabaseMock.Instance;
+
+            var mapper = MapperMock.Instance;
+            var collectionsService = new NFTCollectionService(data, mapper);
+            var artistsService = new ArtistService(data);
+            var userService = new UserService(data);
+
+            var collectionsController = new NFTCollectionsController(collectionsService, artistsService, mapper, userService, null);
+
+            var result = collectionsController.Details(1, null);
+
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestResult>(result);
+        }
+
+        [Fact]
+        public void DetailsShouldReturnBadRequestWhenCollectionInformationIsInvalid()
+        {
+            var collection = new NFTCollection
+            {
+                Name = "TestName",
+                ImageUrl = "TestImageUrl",
+                Description = "TestDescription",
+                NFTs = new List<NFT>(),
+                ArtistId = 0,
+                CategoryId = 0,
+                IsPublic = true
+            };
+
+            var data = DatabaseMock.Instance;
+
+            var mapper = MapperMock.Instance;
+            var collectionsService = new NFTCollectionService(data, mapper);
+            var artistsService = new ArtistService(data);
+            var userService = new UserService(data);
+
+            var collectionsController = new NFTCollectionsController(collectionsService, artistsService, mapper, userService, null);
+
+            var result = collectionsController.Details(collection.Id, "InvalidInformation");
+
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestResult>(result);
+        }
+
+        [Fact]
+        public void CreateShouldReturnView()
+        {
+            var data = DatabaseMock.Instance;
+
+            var mapper = MapperMock.Instance;
+            var collectionsService = new NFTCollectionService(data, mapper);
+            var artistsService = new ArtistService(data);
+            var userService = new UserService(data);
+
+            var collectionsController = new NFTCollectionsController(collectionsService, artistsService, mapper, userService, null);
+            collectionsController.ControllerContext.HttpContext = new DefaultHttpContext
+            {
+                User = ClaimsPrincipalMock.Instance()
+            };
+
+            var result = collectionsController.Create();
+
             Assert.NotNull(result);
             Assert.IsType<ViewResult>(result);
         }
