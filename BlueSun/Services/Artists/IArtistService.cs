@@ -8,6 +8,6 @@
 
         public string UserById(int id);
 
-        public void AddArtist(string name, string phoneNumber, string userId);
+        public void AddArtist(string phoneNumber, string userId);
     }
 }

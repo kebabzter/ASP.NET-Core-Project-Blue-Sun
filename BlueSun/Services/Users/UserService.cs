@@ -107,5 +107,12 @@
 
             return true;
         }
+
+        public bool HasWallet(string userId)
+        => this.data
+            .Users
+            .Where(u => u.HasWallet == true)
+            .Any(u => u.Id == userId);
+            
     }
 }

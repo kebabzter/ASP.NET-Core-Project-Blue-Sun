@@ -41,10 +41,6 @@
                         <a class="dropdown-item fw-bold " asp-area="" asp-controller="Users" asp-action="PersonalCollection" asp-route-id="@userId">Personal Collection</a>
                     </li>
                 }
-                @if (!userIsAdmin)
-                {
-                    
-                }
                 @if (!userIsAdmin && !userIsArtist)
                 {
                     <li>
@@ -82,7 +78,7 @@
 
 
 
-@if (SignInManager.IsSignedIn(User))
+@if (SignInManager.IsSignedIn(User) && !User.IsAdmin())
 {
     <a class="ml-1" data-bs-toggle="modal" data-bs-target="#walletModal" style="width: 40px">
     <img src="https://cdn.discordapp.com/attachments/960121710953254912/960132881194291210/unknown.png" alt="" height="40" width="40"/>
@@ -91,11 +87,11 @@
     var balance = Users.GetBalanceByUserId(User.Id());
     @if (balance == -1)
 {
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="yourWalletConnectLabel" aria-hidden="true">
+    <div class="modal fade" id="walletModal" tabindex="-1" aria-labelledby="yourWalletConnectLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <h5 class="modal-title" id="exampleModalLabel">Wallet</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

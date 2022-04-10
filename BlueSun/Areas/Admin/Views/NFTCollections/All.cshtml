@@ -1,4 +1,4 @@
-﻿@model  IEnumerable<NFTCollectionServiceModel>
+﻿@model IEnumerable<NFTCollectionServiceModel>
 
 @{
     ViewBag.Title = "Admnistration";
@@ -7,16 +7,16 @@
 <h1>All NFT Collections</h1>
 
 <table class="table table-striped">
-  <thead class="table-dark">
-    <tr>
-      <th scope="col">Id</th>
-      <th scope="col">Name</th>
-      <th scope="col">Category</th>
-      <th scope="col">Approved</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Approved</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
         @foreach (var nftCollection in Model)
         {
             <tr>
@@ -25,31 +25,31 @@
                 <td scope="col">@nftCollection.CategoryName</td>
                 <td scope="col">@(nftCollection.IsPublic ? "Yes" : "No")</td>
                 <td scope="col">
-                     <a class="btn btn-danger rounded-end" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                Delete
-                            </a>
+                    <a class="btn btn-danger rounded-end float-end ms-3" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                        Delete
+                    </a>
 
-                            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body text-start">
-                                            Are you sure you want to delete this collection?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
-                                            <a asp-area="" asp-controller="NFTCollections" asp-action="Delete" asp-route-id="@nftCollection.Id" class="btn btn-primary">Yes</a>
-                                        </div>
-                                    </div>
+                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-start">
+                                    Are you sure you want to delete this collection?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                                    <a asp-area="" asp-controller="NFTCollections" asp-action="Delete" asp-route-id="@nftCollection.Id" class="btn btn-primary">Yes</a>
                                 </div>
                             </div>
-                     <a asp-area="" asp-controller="NFTCollections" asp-action="Edit" asp-route-id="@nftCollection.Id" class="btn btn-warning text-white float-end ms-3">Edit</a>
-                     <a asp-area="Admin" asp-controller="NFTCollections" asp-action="ChangeVisibility" asp-route-id="@nftCollection.Id" class="btn btn-info float-end ms-3 text-white">@(nftCollection.IsPublic ? "Hide" : "Approve")</a>
-                     <a asp-area="" asp-controller="NFTCollections" asp-action="Details" asp-route-id="@nftCollection.Id" asp-route-information="@nftCollection.GetInformation()" class="btn btn-primary float-end ms-3">Details</a>
-                    
+                        </div>
+                    </div>
+                    <a asp-area="" asp-controller="NFTCollections" asp-action="Edit" asp-route-id="@nftCollection.Id" class="btn btn-warning text-white float-end ms-3">Edit</a>
+                    <a asp-area="Admin" asp-controller="NFTCollections" asp-action="ChangeVisibility" asp-route-id="@nftCollection.Id" class="btn btn-info float-end ms-3 text-white">@(nftCollection.IsPublic ? "Hide" : "Approve")</a>
+                    <a asp-area="" asp-controller="NFTCollections" asp-action="Details" asp-route-id="@nftCollection.Id" asp-route-information="@nftCollection.GetInformation()" class="btn btn-primary float-end ms-3">Details</a>
+
                 </td>
             </tr>
         }

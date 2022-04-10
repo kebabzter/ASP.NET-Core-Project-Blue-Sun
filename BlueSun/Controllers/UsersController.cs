@@ -33,7 +33,8 @@
             users.FillWallet(userId);
 
             TempData[GlobalMessageKey] = $"You successfully added funds to your wallet!";
-            return RedirectToAction("Index", "Home");
+
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         [Authorize]
@@ -48,7 +49,7 @@
             }
 
             TempData[GlobalMessageKey] = $"You successfully purchased this item!";
-            return RedirectToAction("Details", "NFTs", new { id });
+            return RedirectToAction(nameof(NFTsController.Details), "NFTs", new { id });
         }
 
         [Authorize]
@@ -63,7 +64,7 @@
                 return BadRequest();
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
     }
 }

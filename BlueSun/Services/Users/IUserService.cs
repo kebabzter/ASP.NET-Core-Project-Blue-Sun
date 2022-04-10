@@ -13,5 +13,7 @@
         public bool Purchase(int nftId, string userId);
 
         public bool ConnectWallet(string userId);
+
+        public bool HasWallet(string userId);
     }
 }

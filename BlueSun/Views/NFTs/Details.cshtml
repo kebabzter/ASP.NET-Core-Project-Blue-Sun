@@ -137,7 +137,7 @@
                                         {
                                             if (userIsAdmin || @Model.UserIsOwner)
                                             {
-                                               <button class="btn btn-primary btn-lg" type="button" disabled data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                               <button class="ml-1 btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#walletModal">
                                                     <span class="align-middle">
                                                         <img src="https://cdn.discordapp.com/attachments/960121710953254912/960134052969611284/image.png" width="40" heigth="40"/>
                                                     </span>
@@ -148,7 +148,7 @@
                                             }
                                             else
                                             {
-                                                <button class="btn btn-primary btn-lg" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                                <button class="ml-1 btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#walletModal">
                                                     <span class="align-middle">
                                                         <img src="https://cdn.discordapp.com/attachments/960121710953254912/960134052969611284/image.png" width="40" heigth="40"/>
                                                     </span>
@@ -157,21 +157,25 @@
                                                     </span>
                                                 </button>
                                             }
-
-
-                                            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                                              <div class="offcanvas-header">
-                                                <h5 id="offcanvasRightLabel">Your wallet</h5>
-                                                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                                              </div>
-
-                                              <div class="offcanvas-body">
-                                                  <span>Connect your wallet in order to be able to purchase items!</span>
-                                                  <div>
-                                                      <a class="btn btn-primary" asp-controller="Users" asp-action="ConnectWallet" asp-route-id="@Model.Id">Connect</a>
-                                                  </div>
-                                              </div>
-                                            </div>
+                                             <div class="modal fade" id="walletModal" tabindex="-1" aria-labelledby="yourWalletConnectLabel" aria-hidden="true">
+                                                 <div class="modal-dialog modal-dialog-centered">
+                                                   <div class="modal-content">
+                                                     <div class="modal-header">
+                                                       <h5 class="modal-title" id="exampleModalLabel">Wallet</h5>
+                                                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                     </div>
+                                                     <div class="modal-body">
+                                                       <span>Connect your wallet in order to be able to purchase items!</span>
+                                                     </div>
+                                                     <div class="modal-footer">
+                                                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                       <div>
+                                                           <a class="btn btn-primary" asp-controller="Users" asp-action="ConnectWallet">Connect</a>
+                                                       </div>
+                                                     </div>
+                                                   </div>
+                                                 </div>
+                                             </div>
                                         }
                                     </div>
 
@@ -196,7 +200,7 @@
                                                   <div class="mb-3">
                                                       <label asp-for="Price"></label>
                                                       <input asp-for="Price" class="form-control">
-                                                      <span asp-validation-for="Price" class="small text-danger"> </span>
+                                                      <span asp-validation-for="Price" class="small text-danger"></span>
                                                   </div>
 
                                                   <div class="d-grid d-md-block mt-3">

@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    using static WebConstants;
     public class NFTsController : Controller
     {
         private readonly INFTsService nfts;
@@ -34,16 +35,22 @@
         [HttpPost]
         public IActionResult ForSale(int id, decimal price)
         {
+            if (price < 1 || price > 10000)
+            {
+                TempData[GlobalMessageKey] = $"Price must be between 1 and 10000!";
+                return RedirectToAction(nameof(NFTsController.Details), "NFTs", new { id });
+            }
+
             nfts.ForSale(id, price);
 
-            return RedirectToAction("Details", "NFTs", new { id });
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         public IActionResult TakeFromMarket(int id)
         {
             nfts.TakeFromMarket(id);
 
-            return RedirectToAction("Details", "NFTs", new { id });
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         public IActionResult All()
@@ -91,7 +98,7 @@
                 return BadRequest();
             }
 
-            return RedirectToAction("Details", "NFTs", new { id });
+            return RedirectToAction(nameof(Details), new { id });
         }
     }
 }

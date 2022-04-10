@@ -7,10 +7,6 @@
     public class BecomeArtistFormModel
     {
         [Required]
-        [StringLength(NameMaxLength,MinimumLength = NameMinLength)]
-        public string Name { get; set; }
-
-        [Required]
         [StringLength(PhoneNumberMaxLength, MinimumLength = PhoneNumberMinLength)]
         [Display(Name = "Phone Number")]
         [Phone]

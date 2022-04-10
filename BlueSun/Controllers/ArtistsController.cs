@@ -34,7 +34,7 @@
                 return View(artist);
             }
 
-            artists.AddArtist(artist.Name, artist.PhoneNumber, userId);
+            artists.AddArtist(artist.PhoneNumber, userId);
 
             this.TempData[GlobalMessageKey] = "Thank you for becoming an artist!";
 

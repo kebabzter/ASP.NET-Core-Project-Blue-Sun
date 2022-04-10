@@ -29,11 +29,13 @@
             .Select(a => a.UserId)
             .FirstOrDefault();
 
-        public void AddArtist(string name, string phoneNumber, string userId)
+        public void AddArtist(string phoneNumber, string userId)
         {
+            var user = this.data.Users.FirstOrDefault(u => u.Id == userId);
+
             var artistData = new Artist
             {
-                Name = name,
+                Name = user.FullName,
                 PhoneNumber = phoneNumber,
                 UserId = userId
             };

@@ -1,5 +1,8 @@
 ﻿namespace BlueSun.Services.NFTs.Models
 {
+    using System.ComponentModel.DataAnnotations;
+
+    using static Data.DataConstants.NFT;
     public class NFTDetailsServiceModel
     {
         public int Id { get; init; }

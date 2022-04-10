@@ -34,9 +34,6 @@
                             </li>
                         }
                     </ul>
-                    @*<form class="d-flex col-md-4 position-absolute top-50 start-50 translate-middle">
-                        <input class="form-control me-2" type="search" placeholder="Search items, collections and accounts" aria-label="Search">
-                    </form>*@
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -45,7 +42,13 @@
     <div class="container">
         @if (TempData.ContainsKey(WebConstants.GlobalMessageKey))
         {
-            if(TempData[WebConstants.GlobalMessageKey].ToString().Contains("Insufficient"))
+            if(TempData[WebConstants.GlobalMessageKey].ToString() == "In order to create a collection you have to connect your wallet.")
+            {
+                <div class="alert alert-danger" role="alert">
+                    @TempData[WebConstants.GlobalMessageKey]
+                </div>
+            }
+            else if (TempData[WebConstants.GlobalMessageKey].ToString() == $"Price must be between 1 and 10000!")
             {
                 <div class="alert alert-danger" role="alert">
                     @TempData[WebConstants.GlobalMessageKey]

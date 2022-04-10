@@ -5,6 +5,7 @@
     using BlueSun.Models.NFTCollections;
     using BlueSun.Services.Artists;
     using BlueSun.Services.NFTCollections;
+    using BlueSun.Services.Users;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -15,21 +16,29 @@
         private readonly INFTCollectionService collections;
         private readonly IArtistService artists;
         private readonly IMapper mapper;
+        private readonly IUserService users;
 
         public NFTCollectionsController(
             INFTCollectionService collections,
-            IArtistService artists, 
-            IMapper mapper)
+            IArtistService artists,
+            IMapper mapper,
+            IUserService users)
         {
             this.collections = collections;
             this.artists = artists;
             this.mapper = mapper;
+            this.users = users;
         }
 
         [Authorize]
         public IActionResult Create()
         {
-            
+            if (!users.HasWallet(this.User.Id()))
+            {
+                TempData[GlobalMessageKey] = "In order to create a collection you have to connect your wallet.";
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+
             if (!this.artists.IsArtist(this.User.Id()))
             {
                 return RedirectToAction(nameof(ArtistsController.Become), "Artists");
@@ -85,7 +94,7 @@
 
             if (this.collections.NFTCollectionExists(nftCollection.Name))
             {
-                this.ModelState.AddModelError(nameof(nftCollection.Name), $"NFT Collection with name {nftCollection.Name} already exists.");
+                this.ModelState.AddModelError(nameof(nftCollection.Name), $"NFT Collection with name {nftCollection.Name} already exists!");
             }
 
 
@@ -179,7 +188,6 @@
             //{
             //    this.ModelState.AddModelError(nameof(nftCollection.Name), $"NFT Collection with name {nftCollection.Name} already exists.");
             //}
-
 
             if (!ModelState.IsValid)
             {
