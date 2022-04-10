@@ -1,0 +1,83 @@
+[
+  {
+    "Id": 14,
+    "Description": "This collection has been migrated off the OpenSea Shared Contract. View the original collection here\r\n\r\nCreated by GxngYxng, Zxdiacs are part of the Ghxsts collection and offer Bronze Tier utility. Visit the discord for more information.",
+    "Name": "Zxdiacs - A Ghxsts Collection",
+    "CategoryId": 1,
+    "ImageUrl": "https:\/\/lh3.googleusercontent.com\/25TragV2g6n1QUO9oDvTnvpoAirFXgy2MOHA6Uygg5bpbThlUEbqGcNCsA7VTa-qjhA2TOaeFmS5GAA_njscmn4byDx3j-EvKm5V9eY=h200",
+    "ArtistId": 1,
+    "IsPublic": true
+  },
+  {
+    "Id": 15,
+    "Description": "SuperRare makes it easy to create, sell, and collect rare digital art. SuperRare's smart contract platform allows artists to release limited-edition digital artwork tracked on the blockchain, making the pieces rare, verified, and collectible. Filter the crypto art world's best selling works by artist name, creation type, and year of birth on OpenSea.",
+    "Name": "SuperRare",
+    "CategoryId": 1,
+    "ImageUrl": "https:\/\/lh3.googleusercontent.com\/YhFNM3GpVLCmhT_aVdzEcDfJSjaoqV8-gwrG56ukc9zJqIHqEuw05o_jwf-_cZ8yEAa645GJTtKN7XovzEUNisk_8wuK6X3ae23B3Q=h200",
+    "ArtistId": 1,
+    "IsPublic": true
+  },
+  {
+    "Id": 16,
+    "Description": "SPANKY enters the Superverse!\r\nThis collection brings together all the wacky oddballs, weirdos and freaks of the Superverse; Guided by your spectacular interplanetary host, SUPER FREAK!\r\n\r\nRare 1 of 1 Digital Art Pieces Limited Editions.\r\n\r\n",
+    "Name": "Spanky and Friends",
+    "CategoryId": 1,
+    "ImageUrl": "https:\/\/lh3.googleusercontent.com\/x5TvBbW7qHoJdlX_yRW-GO9LkKB8AQEK9QtespO18z6VwaDMy6Cmvjz9nxxwEnViiORfUgT-kASCQrY_wyMmC7gj5h9KcNzj_GmsuA=h200",
+    "ArtistId": 1,
+    "IsPublic": true
+  },
+  {
+    "Id": 17,
+    "Description": "amazing collection sheeeeeeeeeeeeesh",
+    "Name": "Bored Ape Yacht Club",
+    "CategoryId": 2,
+    "ImageUrl": "https:\/\/lh3.googleusercontent.com\/RBX3jwgykdaQO3rjTcKNf5OVwdukKO46oOAV3zZeiaMb8VER6cKxPDTdGZQdfWcDou75A8KtVZWM_fEnHG4d4q6Um8MeZIlw79BpWPA=h200",
+    "ArtistId": 1,
+    "IsPublic": true
+  },
+  {
+    "Id": 18,
+    "Description": "problemos vupros",
+    "Name": "Gh0stly Gh0sts",
+    "CategoryId": 2,
+    "ImageUrl": "https:\/\/lh3.googleusercontent.com\/MACJRvA4MOLHonq73rxU8TaHPrbYuGbJ5_rqV7pw9ZGd97h5mo5NyU6PpQNOvZzdoVu2KRVs3jP-oMK3FF1XQtNSxN6xf1ZVd9is=h200",
+    "ArtistId": 1,
+    "IsPublic": true
+  },
+  {
+    "Id": 19,
+    "Description": "This is the amazing Alpine Shades photography collection",
+    "Name": "Alpine Shades",
+    "CategoryId": 3,
+    "ImageUrl": "https:\/\/lh3.googleusercontent.com\/lnNNPaFPpkOPJ-rZUBNL-TyjKp2mKCzW4yMaeLErO9LGHPaNOdAgjDFVfKHDgQhVpbd581l87K6vj8vEixUrF13sqduqNnLkmw4g2w=h200",
+    "ArtistId": 1,
+    "IsPublic": true
+  },
+  {
+    "Id": 20,
+    "Description": "Comedical caricatures of famous sport players",
+    "Name": "Gridiron Goofs",
+    "CategoryId": 4,
+    "ImageUrl": "https:\/\/lh3.googleusercontent.com\/AtIJhK3EEDr4zXZ424dyRWMRE3a-Tcz4A1isB3DsfnBU9shE8MleOnRuyTzR1ZI5FRYER_rL-IRDUna9l0sP19XCgOR4ryQ0x8uJJg=h200",
+    "ArtistId": 1,
+    "IsPublic": true
+  },
+  {
+    "Id": 21,
+    "Description": "Crypto dunks is a newly created pixel art collection",
+    "Name": "CryptoDunks",
+    "CategoryId": 4,
+    "ImageUrl": "https:\/\/lh3.googleusercontent.com\/Si_z1MHVB-rg96yRiXewpviYqQbXY8qVFXFMiObgU43_Plfh9Gr_-qwSl6umAKthc69ield6aTIxs-8kyV24qIS7rQHItpbEfx6SfQ=h200",
+    "ArtistId": 1,
+    "IsPublic": true
+  },
+  {
+    "Id": 22,
+    "Description": "8K NEXT-GENERATION, HIGH FASHION HAPES\r\n\r\nUnique, fully 3D and built to unite the ape multiverse. Designed and styled by Digimental.",
+    "Name": "HAPE PRIME",
+    "CategoryId": 2,
+    "ImageUrl": "https:\/\/pbs.twimg.com\/media\/FK2b5PJX0AkbtKX.jpg",
+    "ArtistId": 1,
+    "IsPublic": true
+  }
+]

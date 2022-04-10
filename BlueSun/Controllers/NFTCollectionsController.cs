@@ -1,5 +1,6 @@
 ﻿namespace BlueSun.Controllers
 {
+    using AspNetCoreHero.ToastNotification.Abstractions;
     using AutoMapper;
     using BlueSun.Infrastructure.Extensions;
     using BlueSun.Models.NFTCollections;
@@ -17,37 +18,19 @@
         private readonly IArtistService artists;
         private readonly IMapper mapper;
         private readonly IUserService users;
+        private readonly INotyfService notyf;
 
         public NFTCollectionsController(
             INFTCollectionService collections,
             IArtistService artists,
             IMapper mapper,
-            IUserService users)
+            IUserService users, INotyfService notyf)
         {
             this.collections = collections;
             this.artists = artists;
             this.mapper = mapper;
             this.users = users;
-        }
-
-        [Authorize]
-        public IActionResult Create()
-        {
-            if (!users.HasWallet(this.User.Id()))
-            {
-                TempData[GlobalMessageKey] = "In order to create a collection you have to connect your wallet.";
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
-
-            if (!this.artists.IsArtist(this.User.Id()))
-            {
-                return RedirectToAction(nameof(ArtistsController.Become), "Artists");
-            }
-
-            return View(new NFTCollectionFormModel
-            {
-                Categories = this.collections.AllCategories()
-            });
+            this.notyf = notyf;
         }
 
         public IActionResult All([FromQuery] AllNFTCollectionsQueryModel query)
@@ -69,11 +52,57 @@
         }
 
         [Authorize]
+        public IActionResult Details(int id, string information)
+         {
+            var collection = this.collections.Details(id);
+
+            if (information != collection.Name)
+            {
+                return BadRequest();
+            }
+
+            var nfts = collections.GetNFTs(id);
+
+            var artistUserId = artists.UserById(collection.ArtistId);
+
+            return View(new CollectionNFTsQueryModel
+            {
+                Name = collection.Name,
+                NFTs = nfts,
+                Id = collection.Id,
+                ArtistUserId = artistUserId,
+                ImageUrl = collection.ImageUrl,
+                Description = collection.Description
+            });
+
+        }
+
+        [Authorize]
         public IActionResult MyCollections()
         {
             var myCollections = this.collections.ByUser(this.User.Id());
 
             return View(myCollections);
+        }
+
+        [Authorize]
+        public IActionResult Create()
+        {
+            if (!users.HasWallet(this.User.Id()))
+            {
+                notyf.Error("In order to create a collection you have to connect your wallet.");
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+
+            if (!this.artists.IsArtist(this.User.Id()))
+            {
+                return RedirectToAction(nameof(ArtistsController.Become), "Artists");
+            }
+
+            return View(new NFTCollectionFormModel
+            {
+                Categories = this.collections.AllCategories()
+            });
         }
 
         [Authorize]
@@ -112,35 +141,9 @@
                nftCollection.CategoryId,
                artistId);
 
-            TempData[GlobalMessageKey] = "You successfully added a NFT collection and it is waiting for approval!";
+            notyf.Success("You successfully added a NFT collection and it is waiting for approval!");
 
             return RedirectToAction(nameof(Details), new { id = collectionId, information = nftCollection.GetInformation()});
-        }
-
-        [Authorize]
-        public IActionResult Details(int id, string information)
-         {
-            var collection = this.collections.Details(id);
-
-            if (information != collection.GetInformation())
-            {
-                return BadRequest();
-            }
-
-            var nfts = collections.GetNFTs(id);
-
-            var artistUserId = artists.UserById(collection.ArtistId);
-
-            return View(new CollectionNFTsQueryModel
-            {
-                Name = collection.Name,
-                NFTs = nfts,
-                Id = collection.Id,
-                ArtistUserId = artistUserId,
-                ImageUrl = collection.ImageUrl,
-                Description = collection.Description
-            });
-
         }
 
         [Authorize]
@@ -214,7 +217,7 @@
                 return BadRequest();
             }
 
-            TempData[GlobalMessageKey] = $"You successfully edited your NFT collection{(this.User.IsAdmin() ? string.Empty : " and it is waiting for approval")}!";
+            notyf.Success($"You successfully edited your NFT collection{(this.User.IsAdmin() ? string.Empty : " and it is waiting for approval")}!");
 
             return RedirectToAction(nameof(Details), new { id , information = nftCollection.GetInformation() });
         }
@@ -231,7 +234,7 @@
 
             collections.Delete(id);
 
-            TempData[GlobalMessageKey] = "You successfully deleted your NFT collection!";
+            notyf.Success("You successfully deleted your NFT collection!");
 
             return RedirectToAction(nameof(MyCollections));
         }

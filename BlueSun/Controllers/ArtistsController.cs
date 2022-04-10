@@ -1,5 +1,6 @@
 ﻿namespace BlueSun.Controllers
 {
+    using AspNetCoreHero.ToastNotification.Abstractions;
     using BlueSun.Infrastructure.Extensions;
     using BlueSun.Models.Artists;
     using BlueSun.Services.Artists;
@@ -10,8 +11,13 @@
     public class ArtistsController : Controller
     {
         private readonly IArtistService artists;
+        private readonly INotyfService notyf;
 
-        public ArtistsController(IArtistService artists) => this.artists = artists;
+        public ArtistsController(IArtistService artists, INotyfService notyf)
+        {
+            this.artists = artists;
+            this.notyf = notyf;
+        }
 
         [Authorize]
         public IActionResult Become() => View();
@@ -36,7 +42,7 @@
 
             artists.AddArtist(artist.PhoneNumber, userId);
 
-            this.TempData[GlobalMessageKey] = "Thank you for becoming an artist!";
+            notyf.Success("Thank you for becoming an artist!");
 
             return RedirectToAction(nameof(NFTCollectionsController.All), "NFTCollections");
         }

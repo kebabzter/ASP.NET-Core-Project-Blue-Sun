@@ -10,7 +10,7 @@
         [MaxLength(FullNameMaxLength)]
         public string FullName { get; set; }
 
-        public ICollection<NFT> NFTs { get; init; } = new List<NFT>();
+        public IEnumerable<NFT> NFTs { get; set; } = new List<NFT>();
 
         public Wallet Wallet { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿namespace BlueSun.Controllers
 {
+    using AspNetCoreHero.ToastNotification.Abstractions;
     using BlueSun.Infrastructure.Extensions;
     using BlueSun.Services.Users;
     using Microsoft.AspNetCore.Authorization;
@@ -11,10 +12,14 @@
     public class UsersController : Controller
     {
         private readonly IUserService users;
+        private readonly INotyfService notyf;
 
-        public UsersController(IUserService users)
+        public UsersController(
+            IUserService users,
+            INotyfService notyf)
         {
             this.users = users;
+            this.notyf = notyf;
         }
 
         [Authorize]
@@ -32,7 +37,7 @@
 
             users.FillWallet(userId);
 
-            TempData[GlobalMessageKey] = $"You successfully added funds to your wallet!";
+            notyf.Success("Successfully filled wallet!");
 
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
@@ -48,7 +53,7 @@
                 return BadRequest();
             }
 
-            TempData[GlobalMessageKey] = $"You successfully purchased this item!";
+             notyf.Success("You successfully purchased an item!");
             return RedirectToAction(nameof(NFTsController.Details), "NFTs", new { id });
         }
 

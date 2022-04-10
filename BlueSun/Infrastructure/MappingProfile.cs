@@ -10,6 +10,9 @@
     {
         public MappingProfile()
         {
+            this.CreateMap<ImportCollectionsModel, NFTCollection>();
+            this.CreateMap<ImportNFTsModel, NFT>();
+
             this.CreateMap<Category, NFTCollectionCategoryServiceModel>();
 
             this.CreateMap<NFTCollection, LatestNFTCollectionServiceModel>();

@@ -28,7 +28,8 @@
                 ImageUrl = nft.ImageUrl,
                 CategoryId = collection.CategoryId,
                 NFTCollectionId = id,
-                OwnerId = ownerId
+                OwnerId = ownerId,
+                IsForSale = true,
             };
 
 

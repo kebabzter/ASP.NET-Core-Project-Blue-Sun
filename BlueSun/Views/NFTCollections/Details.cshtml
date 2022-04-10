@@ -15,9 +15,9 @@
     var userIsCreator = @Model.ArtistUserId == userId;
 }
 
-<img src="@Model.ImageUrl" style="height:300px; width:1903px; z-index: 0" alt="" class="position position-absolute top-0 start-0"/>
+
 <div class="row">
-    <h2 style="z-index: 1200" class="heading-margin text-center fs-1">@Model.Name</h2>
+    <h2 class="mt-4 mb-4 text-center fs-1">@Model.Name</h2>
     <p class="text-center">
         <button class="btn btn-info text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
             Description
@@ -47,7 +47,7 @@
                                     @nft.Price
                                 </span>
                                 <span class="align-middle">
-                                    <img src="https://freepikpsd.com/file/2019/11/game-coin-transparent-png-images-.png" width="25" heigth="25" />
+                                    <img src="~/img/coin.png" width="25" heigth="25" />
                                 </span>
                                 <a asp-controller="NFTs" asp-action="Details" asp-route-id="@nft.Id" class="btn stretched-link hidden"></a>
                             </p>

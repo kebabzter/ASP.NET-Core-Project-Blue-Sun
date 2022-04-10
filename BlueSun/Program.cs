@@ -1,3 +1,4 @@
+using AspNetCoreHero.ToastNotification;
 using BlueSun.Data;
 using BlueSun.Data.Models;
 using BlueSun.Infrastructure.Extensions;
@@ -45,11 +46,11 @@ builder.Services.AddTransient<INFTCollectionService, NFTCollectionService>();
 builder.Services.AddTransient<IArtistService, ArtistService>();
 builder.Services.AddTransient<INFTsService, NFTsService>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddNotyf(config => { config.DurationInSeconds = 5; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
 
 var app = builder.Build();
 
 //Preparing DB from infrastructure folder
-app.PrepareDatabase();
 
 //Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
@@ -58,11 +59,13 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
+    app.UseExceptionHandler("/Home/Error")
+       .UseHsts();
 }
 
-app.UseHttpsRedirection()
+app
+   .PrepareDatabase()
+   .UseHttpsRedirection()
    .UseStaticFiles()
    .UseRouting()
    .UseAuthentication()

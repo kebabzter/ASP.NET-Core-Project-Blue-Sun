@@ -49,7 +49,7 @@ namespace BlueSun.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Artists");
+                    b.ToTable("Artists", (string)null);
                 });
 
             modelBuilder.Entity("BlueSun.Data.Models.Category", b =>
@@ -67,7 +67,7 @@ namespace BlueSun.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("BlueSun.Data.Models.NFT", b =>
@@ -116,7 +116,7 @@ namespace BlueSun.Data.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("NFTs");
+                    b.ToTable("NFTs", (string)null);
                 });
 
             modelBuilder.Entity("BlueSun.Data.Models.NFTCollection", b =>
@@ -156,7 +156,7 @@ namespace BlueSun.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("NFTCollections");
+                    b.ToTable("NFTCollections", (string)null);
                 });
 
             modelBuilder.Entity("BlueSun.Data.Models.User", b =>
@@ -252,7 +252,7 @@ namespace BlueSun.Data.Migrations
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL");
 
-                    b.ToTable("Wallets");
+                    b.ToTable("Wallets", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

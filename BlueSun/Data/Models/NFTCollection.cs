@@ -28,7 +28,7 @@
 
         public ICollection<NFT> NFTs { get; init; } = new List<NFT>();
 
-        public int ArtistId { get; init; }
+        public int ArtistId { get; set; }
 
         public Artist Artist { get; init; }
     }

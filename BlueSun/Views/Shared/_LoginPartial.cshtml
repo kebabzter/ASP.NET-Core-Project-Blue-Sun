@@ -25,14 +25,14 @@
 
         <li class="nav-item dropstart" style="width: 60px;">
             <a class="nav-link dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://cdn.discordapp.com/attachments/960121710953254912/961201532127309834/unknown.png" alt="" width="40" height="40">
+                <img src="~/img/account.png" alt="" width="40" height="40">
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li><a class="dropdown-item fw-bold" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage Account</a></li>
                 @if (userIsArtist && !userIsAdmin)
                 {
                     <li>
-                        <a class="dropdown-item fw-bold " asp-area="" asp-controller="NFTCollections" asp-action="MyCollections">My Collections</a>
+                        <a class="dropdown-item fw-bold " asp-area="" asp-controller="NFTCollections" asp-action="MyCollections">My Creations</a>
                     </li>
                 }
                 @if (!userIsAdmin)
@@ -60,7 +60,7 @@
         <li class="nav-item mt-1 ml-1" style="width: 45px;">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button type="submit" class="nav-link btn btn-link text-dark">
-                    <img src="https://cdn.discordapp.com/attachments/960121710953254912/961202478135787530/unknown.png" alt="" width="30" height="30">
+                    <img src="~/img/exit.png" alt="" width="30" height="30">
                 </button>
             </form>
         </li>
@@ -81,7 +81,7 @@
 @if (SignInManager.IsSignedIn(User) && !User.IsAdmin())
 {
     <a class="ml-1" data-bs-toggle="modal" data-bs-target="#walletModal" style="width: 40px">
-    <img src="https://cdn.discordapp.com/attachments/960121710953254912/960132881194291210/unknown.png" alt="" height="40" width="40"/>
+    <img src="~/img/wallet.png" alt="" height="40" width="40"/>
     </a>
 
     var balance = Users.GetBalanceByUserId(User.Id());
@@ -124,7 +124,7 @@ else
                     @balance
                 </span>
                 <span class="align-middle">
-                    <img src="https://freepikpsd.com/file/2019/11/game-coin-transparent-png-images-.png" width="25" heigth="25" />
+                    <img src="~/img/coin.png" width="25" heigth="25" />
                 </span>
             </div>
             <div class="modal-footer">

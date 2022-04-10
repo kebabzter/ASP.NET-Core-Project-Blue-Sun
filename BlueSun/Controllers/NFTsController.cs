@@ -1,5 +1,6 @@
 ﻿namespace BlueSun.Controllers
 {
+    using AspNetCoreHero.ToastNotification.Abstractions;
     using AutoMapper;
     using BlueSun.Infrastructure.Extensions;
     using BlueSun.Models.NFTs;
@@ -12,13 +13,15 @@
     {
         private readonly INFTsService nfts;
         private readonly IMapper mapper;
+        private readonly INotyfService notyf;
 
         public NFTsController(
-            INFTsService nfts, 
-            IMapper mapper)
+            INFTsService nfts,
+            IMapper mapper, INotyfService notyf)
         {
             this.nfts = nfts;
             this.mapper = mapper;
+            this.notyf = notyf;
         }
 
         [Authorize]
@@ -37,11 +40,12 @@
         {
             if (price < 1 || price > 10000)
             {
-                TempData[GlobalMessageKey] = $"Price must be between 1 and 10000!";
+                notyf.Warning("Price must be between 1 and 10000!");
                 return RedirectToAction(nameof(NFTsController.Details), "NFTs", new { id });
             }
 
             nfts.ForSale(id, price);
+            notyf.Success("Your successfully put your item on the market!");
 
             return RedirectToAction(nameof(Details), new { id });
         }
@@ -50,6 +54,7 @@
         {
             nfts.TakeFromMarket(id);
 
+            notyf.Success("Your successfully took your item off the market!");
             return RedirectToAction(nameof(Details), new { id });
         }
 
@@ -73,7 +78,7 @@
 
             nfts.Add(nft, id, userId);
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(NFTCollectionsController.MyCollections), "NFTCollections");
         }
 
         [Authorize]
