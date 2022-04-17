@@ -52,7 +52,7 @@
         }
 
         [Authorize]
-        public IActionResult Details(int id, string name)
+        public IActionResult Details(int id, string information)
          {
             var collection = this.collections.Details(id);
 
@@ -61,7 +61,7 @@
                 return BadRequest();
             }
 
-            if (name != collection.GetInformation())
+            if (information != collection.GetInformation())
             {
                 return BadRequest();
             }
