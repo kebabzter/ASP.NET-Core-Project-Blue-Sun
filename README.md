@@ -2,7 +2,7 @@
 
 BlueSun is a project created with educational pursposes, using .NET + EntityFramework. The database of choice here is Microsft SQL Server.
 
-##Information about the project
+## Information about the project
 
 * The idea behind this application is to give users a platform to showcase and trade NFTs.
 * Guests can visit the Home, All NFTs, Explore(Catalog), Login and Register pages.
